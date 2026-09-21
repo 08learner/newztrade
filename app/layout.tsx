@@ -11,9 +11,28 @@ const serif = Newsreader({
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-ticker" })
 
 export const metadata: Metadata = {
-  title: "NewzTrade — Trading News, Markets & NEPSE",
+  metadataBase: new URL("https://newztrade.com"),
+  title: {
+    default: "NewzTrade — Trading News, Markets & NEPSE",
+    template: "%s | NewzTrade",
+  },
   description:
-    "Clean, fast trading news across stocks, crypto, forex, commodities and Nepal's NEPSE market.",
+    "Clean, fast trading news across stocks, crypto, forex, commodities and Nepal's NEPSE market. Daily auto-generated NEPSE Today and Market Wrap digests.",
+  keywords: [
+    "trading news",
+    "NEPSE",
+    "Nepal Stock Exchange",
+    "stock market news",
+    "crypto news",
+    "forex news",
+  ],
+  openGraph: {
+    siteName: "NewzTrade",
+    type: "website",
+    title: "NewzTrade — Trading News, Markets & NEPSE",
+    description:
+      "Clean, fast trading news across stocks, crypto, forex, commodities and Nepal's NEPSE market.",
+  },
 }
 
 export default function RootLayout({

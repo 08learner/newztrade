@@ -4,6 +4,7 @@ import { Hero } from "@/components/newztrade/Hero"
 import { NewsGrid } from "@/components/newztrade/NewsGrid"
 import { NepseSpotlight } from "@/components/newztrade/NepseSpotlight"
 import { Movers } from "@/components/newztrade/Movers"
+import { DailyDigestStrip } from "@/components/newztrade/DailyDigestStrip"
 import { Newsletter } from "@/components/newztrade/Newsletter"
 import { Footer } from "@/components/newztrade/Footer"
 
@@ -17,6 +18,7 @@ export default function HomePage() {
         <NewsGrid />
         <NepseSpotlight />
         <Movers />
+        <DailyDigestStrip />
         <Newsletter />
       </main>
       <Footer />

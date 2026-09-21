@@ -25,17 +25,41 @@ export function Footer() {
               coverage of Nepal's NEPSE market.
             </p>
           </div>
-          <nav className="grid grid-cols-2 gap-x-12 gap-y-3 sm:grid-cols-3" aria-label="Footer">
-            {navItems.map((item) => (
-              <Link
-                key={item}
-                href={categoryHref(item)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {item}
-              </Link>
-            ))}
-          </nav>
+          <div className="flex gap-16">
+            <nav className="grid gap-y-3" aria-label="Sections">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-foreground">
+                Sections
+              </p>
+              {navItems.map((item) => (
+                <Link
+                  key={item}
+                  href={categoryHref(item)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {item}
+                </Link>
+              ))}
+            </nav>
+            <nav className="grid gap-y-3" aria-label="Company">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-foreground">
+                Company
+              </p>
+              {[
+                { label: "About", href: "/about" },
+                { label: "Contact", href: "/contact" },
+                { label: "Privacy Policy", href: "/privacy" },
+                { label: "Terms of Use", href: "/terms" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
         </div>
         <div className="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 NewzTrade. All rights reserved.</p>
