@@ -1,6 +1,7 @@
 import Link from "next/link"
 import type { Metadata } from "next"
 import { digests, getDigestBySlug } from "@/lib/digest"
+import { getInstrumentBySymbol } from "@/lib/data"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
@@ -106,13 +107,23 @@ export default async function DailyDigestPage({
                   {digest.quotes.map((q) => {
                     const up = q.changePct >= 0
                     const Icon = up ? TrendingUp : TrendingDown
+                    const instrument = getInstrumentBySymbol(q.symbol)
                     return (
                       <li
                         key={q.symbol}
                         className="flex items-center justify-between gap-3 py-2.5 border-b border-white/10 last:border-0"
                       >
                         <div>
-                          <p className="text-sm font-semibold text-white">{q.symbol}</p>
+                          {instrument ? (
+                            <Link
+                              href={`/instrument/${instrument.slug}`}
+                              className="text-sm font-semibold text-white hover:text-emerald-400 hover:underline underline-offset-2 transition-colors"
+                            >
+                              {q.symbol}
+                            </Link>
+                          ) : (
+                            <p className="text-sm font-semibold text-white">{q.symbol}</p>
+                          )}
                           <p className="text-xs text-white/50">{q.name}</p>
                         </div>
                         <div className="text-right">

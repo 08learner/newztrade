@@ -1,4 +1,5 @@
-import { movers } from "@/lib/data"
+import Link from "next/link"
+import { getInstrumentBySymbol, movers } from "@/lib/data"
 import { TrendingDown, TrendingUp } from "lucide-react"
 
 function MoverTable({
@@ -22,10 +23,21 @@ function MoverTable({
         {title}
       </h3>
       <ul className="mt-4 divide-y divide-border">
-        {rows.map((m) => (
+        {rows.map((m) => {
+          const instrument = getInstrumentBySymbol(m.symbol)
+          return (
           <li key={m.symbol} className="flex items-center justify-between gap-3 py-3">
             <div className="min-w-0">
-              <p className="text-sm font-semibold">{m.symbol}</p>
+              {instrument ? (
+                <Link
+                  href={`/instrument/${instrument.slug}`}
+                  className="text-sm font-semibold hover:text-up hover:underline underline-offset-2 transition-colors"
+                >
+                  {m.symbol}
+                </Link>
+              ) : (
+                <p className="text-sm font-semibold">{m.symbol}</p>
+              )}
               <p className="text-xs text-muted-foreground truncate">{m.name}</p>
             </div>
             <div className="text-right shrink-0">
@@ -40,7 +52,8 @@ function MoverTable({
               </p>
             </div>
           </li>
-        ))}
+          )
+        })}
       </ul>
     </div>
   )

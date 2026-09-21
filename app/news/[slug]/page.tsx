@@ -63,8 +63,24 @@ export default async function ArticlePage({
     related = [...related, ...more.slice(0, 3 - related.length)]
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title,
+    description: article.excerpt,
+    datePublished: article.publishedAt,
+    author: { "@type": "Person", name: article.author },
+    publisher: { "@type": "Organization", name: "NewzTrade" },
+    image: `https://newztrade.com${article.image}`,
+    articleSection: article.category,
+  }
+
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         <article className="mx-auto max-w-7xl px-4 sm:px-6 pt-8 pb-12">

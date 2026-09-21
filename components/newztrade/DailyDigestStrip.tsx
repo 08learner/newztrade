@@ -10,7 +10,12 @@ export function DailyDigestStrip() {
           <CalendarDays className="size-4 text-up" />
           Daily Digest
         </h2>
-        <span className="text-xs text-muted-foreground">Auto-generated market summaries</span>
+        <Link
+          href="/daily"
+          className="text-xs font-semibold text-up hover:underline underline-offset-4"
+        >
+          View archive
+        </Link>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         {currentDigests.map((d) => (

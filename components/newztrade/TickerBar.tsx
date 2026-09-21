@@ -1,4 +1,5 @@
-import { tickerQuotes } from "@/lib/data"
+import Link from "next/link"
+import { getInstrumentBySymbol, tickerQuotes } from "@/lib/data"
 import { TrendingDown, TrendingUp } from "lucide-react"
 
 function TickerItem({
@@ -11,8 +12,11 @@ function TickerItem({
   changePct: number
 }) {
   const up = changePct >= 0
+  const instrument = getInstrumentBySymbol(symbol)
   return (
-    <div className="flex items-center gap-2.5 px-5 py-2 shrink-0">
+    <Link
+      href={instrument ? `/instrument/${instrument.slug}` : "/"}
+      className="flex items-center gap-2.5 px-5 py-2 shrink-0 hover:bg-white/5 transition-colors">
       <span className="text-[11px] font-semibold tracking-wide text-white/90 uppercase">
         {symbol}
       </span>
@@ -30,7 +34,7 @@ function TickerItem({
         {up ? "+" : ""}
         {changePct.toFixed(2)}%
       </span>
-    </div>
+    </Link>
   )
 }
 

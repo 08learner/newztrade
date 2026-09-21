@@ -45,6 +45,7 @@ export function Footer() {
                 Company
               </p>
               {[
+                { label: "Digest Archive", href: "/daily" },
                 { label: "About", href: "/about" },
                 { label: "Contact", href: "/contact" },
                 { label: "Privacy Policy", href: "/privacy" },
