@@ -50,7 +50,7 @@ export function Header() {
           <div className="flex items-center gap-4">
             <span className="hidden lg:flex items-center gap-1.5 text-xs text-muted-foreground">
               <span className="size-1.5 rounded-full bg-up animate-pulse" />
-              Markets open · edited in JBOX round 3
+              Markets open · edited in JBOX round 4
             </span>
             <button
               aria-label="Search"
