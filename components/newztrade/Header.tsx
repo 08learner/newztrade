@@ -1,0 +1,52 @@
+import { navItems } from "@/lib/data"
+import { Search, Zap } from "lucide-react"
+
+export function Header() {
+  return (
+    <header className="sticky top-0 z-40 bg-background/90 backdrop-blur border-b border-border">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16">
+          <a href="/" className="flex items-center gap-2">
+            <span className="grid size-8 place-items-center rounded-md bg-foreground text-background">
+              <Zap className="size-4" strokeWidth={2.5} />
+            </span>
+            <span className="font-serif text-2xl font-bold tracking-tight">
+              Newz<span className="text-up">Trade</span>
+            </span>
+          </a>
+
+          <nav className="hidden md:flex items-center gap-7" aria-label="Primary">
+            {navItems.map((item) => (
+              <span
+                key={item}
+                className={`text-sm font-medium cursor-pointer transition-colors hover:text-foreground ${
+                  item === "Markets" ? "text-foreground" : "text-muted-foreground"
+                }`}
+              >
+                {item}
+                {item === "NEPSE" && (
+                  <span className="ml-1.5 rounded-full bg-up-soft px-1.5 py-0.5 text-[10px] font-semibold text-up align-middle">
+                    NP
+                  </span>
+                )}
+              </span>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-4">
+            <span className="hidden lg:flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span className="size-1.5 rounded-full bg-up animate-pulse" />
+              Markets open · NPT 10:15
+            </span>
+            <button
+              aria-label="Search"
+              className="grid size-9 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
+            >
+              <Search className="size-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+  )
+}
