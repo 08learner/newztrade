@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { articles, featuredArticle, timeAgo } from "@/lib/data"
 import { ArrowUpRight, Clock } from "lucide-react"
 
@@ -8,7 +9,7 @@ export function Hero() {
     <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-8 pb-12">
       <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
         {/* Featured story */}
-        <article className="group cursor-pointer">
+        <Link href={`/news/${featuredArticle.slug}`} className="group cursor-pointer block">
           <div className="relative overflow-hidden rounded-xl aspect-[16/9] bg-muted">
             <Image
               src={featuredArticle.image}
@@ -39,7 +40,7 @@ export function Hero() {
               <span>{featuredArticle.readMinutes} min read</span>
             </div>
           </div>
-        </article>
+        </Link>
 
         {/* Top stories rail */}
         <aside className="flex flex-col">
@@ -48,25 +49,30 @@ export function Hero() {
           </h2>
           <ol className="flex-1 divide-y divide-border">
             {sideStories.map((a, i) => (
-              <li key={a.id} className="group flex gap-4 py-4 cursor-pointer">
-                <span className="font-serif text-3xl font-bold text-border group-hover:text-up transition-colors leading-none pt-0.5">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-up">
-                    {a.category}
+              <li key={a.id}>
+                <Link href={`/news/${a.slug}`} className="group flex gap-4 py-4 cursor-pointer">
+                  <span className="font-serif text-3xl font-bold text-border group-hover:text-up transition-colors leading-none pt-0.5">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-1 font-serif text-[17px] font-semibold leading-snug group-hover:underline underline-offset-2">
-                    {a.title}
-                  </h3>
-                  <p className="mt-1.5 text-xs text-muted-foreground">{timeAgo(a.publishedAt)}</p>
-                </div>
+                  <div>
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-up">
+                      {a.category}
+                    </span>
+                    <h3 className="mt-1 font-serif text-[17px] font-semibold leading-snug group-hover:underline underline-offset-2">
+                      {a.title}
+                    </h3>
+                    <p className="mt-1.5 text-xs text-muted-foreground">{timeAgo(a.publishedAt)}</p>
+                  </div>
+                </Link>
               </li>
             ))}
           </ol>
-          <button className="mt-2 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-up hover:gap-2.5 transition-all">
+          <Link
+            href="/markets"
+            className="mt-2 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-up hover:gap-2.5 transition-all"
+          >
             View all markets news <ArrowUpRight className="size-4" />
-          </button>
+          </Link>
         </aside>
       </div>
     </section>

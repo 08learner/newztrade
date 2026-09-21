@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { articles, nepseSnapshot, IMG, timeAgo } from "@/lib/data"
 import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 
@@ -65,7 +66,11 @@ export function NepseSpotlight() {
           {/* NEPSE stories */}
           <div className="space-y-8">
             {nepseArticles.map((a) => (
-              <article key={a.id} className="group flex gap-5 sm:gap-6 cursor-pointer">
+              <Link
+                key={a.id}
+                href={`/news/${a.slug}`}
+                className="group flex gap-5 sm:gap-6 cursor-pointer"
+              >
                 <div className="relative hidden sm:block w-44 shrink-0 overflow-hidden rounded-lg aspect-[4/3]">
                   <Image
                     src={a.image}
@@ -87,7 +92,7 @@ export function NepseSpotlight() {
                   </p>
                   <p className="mt-2 text-xs text-white/40">{timeAgo(a.publishedAt)}</p>
                 </div>
-              </article>
+              </Link>
             ))}
             <div className="relative overflow-hidden rounded-xl aspect-[21/9]">
               <Image

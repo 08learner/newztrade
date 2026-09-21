@@ -9,6 +9,13 @@ const nextConfig: NextConfig = {
     "preview.jboxai.com",
     "*.preview.jboxai.com",
   ],
+  // Internal verification route used by the managed preview harness
+  async rewrites() {
+    return [
+      { source: "/JBOX", destination: "/" },
+      { source: "/jbox", destination: "/" },
+    ]
+  },
   images: {
     remotePatterns: [
       {

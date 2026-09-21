@@ -1,5 +1,10 @@
+import Link from "next/link"
 import { navItems } from "@/lib/data"
 import { Zap } from "lucide-react"
+
+function categoryHref(item: string) {
+  return item === "Markets" ? "/" : `/${item.toLowerCase()}`
+}
 
 export function Footer() {
   return (
@@ -7,14 +12,14 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
-            <a href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2">
               <span className="grid size-7 place-items-center rounded-md bg-foreground text-background">
                 <Zap className="size-3.5" strokeWidth={2.5} />
               </span>
               <span className="font-serif text-xl font-bold tracking-tight">
                 Newz<span className="text-up">Trade</span>
               </span>
-            </a>
+            </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
               Trading news for everyone — global stocks, crypto, forex, commodities and dedicated
               coverage of Nepal's NEPSE market.
@@ -22,12 +27,13 @@ export function Footer() {
           </div>
           <nav className="grid grid-cols-2 gap-x-12 gap-y-3 sm:grid-cols-3" aria-label="Footer">
             {navItems.map((item) => (
-              <span
+              <Link
                 key={item}
-                className="text-sm text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+                href={categoryHref(item)}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {item}
-              </span>
+              </Link>
             ))}
           </nav>
         </div>

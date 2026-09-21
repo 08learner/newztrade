@@ -8,6 +8,7 @@ export interface Article {
   slug: string
   title: string
   excerpt: string
+  body: string
   category: Category
   source: string
   author: string
@@ -61,6 +62,7 @@ export const featuredArticle: Article = {
   publishedAt: "2026-09-21T04:30:00Z",
   readMinutes: 6,
   image: IMG.hero,
+  body: `Equity markets across the world climbed on Monday after a string of central-bank officials hinted that the pace of rate increases may slow in the coming quarters.\n\nIn New York, the S&P 500 added to a three-week winning streak as technology and financial shares led the advance. European indices followed Asia higher, with London's FTSE 100 touching its best level since early August.\n\nTraders parsed remarks from Federal Reserve speakers who emphasized that inflation data, while still above target, has cooled enough to justify a more measured approach. Bond yields slipped, and the dollar softened against a basket of major currencies.\n\nIn Kathmandu, the Nepal Stock Exchange posted one of its strongest weekly closes in months. Banking names dominated turnover while hydropower shares gave back some recent gains.\n\nAnalysts say the next few sessions will hinge on fresh inflation prints and any guidance from major central banks. For now, risk appetite appears intact.`,
 }
 
 export const articles: Article[] = [
@@ -75,6 +77,7 @@ export const articles: Article[] = [
     author: "Prerana Karki",
     publishedAt: "2026-09-21T03:10:00Z",
     readMinutes: 4,
+    body: `The Nepal Stock Exchange opened the week with commercial banks firmly in the driver's seat. By mid-morning, lenders accounted for nearly half of the total market turnover.\n\nNabil Bank and NIC Asia stood out on the buyer side, helped by expectations of stable net interest margins and improving deposit flows. The banking rally came as investors trimmed exposure to hydropower counters after a mixed bag of quarterly results.\n\nHydropower developers that had run up sharply over the past month saw profit-taking, with several stocks falling to their lower circuit limits. Analysts described the rotation as a healthy correction within a broader sideways trend.\n\nBroader market breadth was positive, with more advancers than decliners. Total turnover crossed NPR 8 billion, signaling steady participation from domestic institutions.\n\nLooking ahead, traders will watch this week's monetary policy signals from Nepal Rastra Bank for clues on liquidity and provisioning norms.`,
     image: IMG.nepse,
   },
   {
@@ -88,6 +91,7 @@ export const articles: Article[] = [
     author: "Maya Gurung",
     publishedAt: "2026-09-21T02:45:00Z",
     readMinutes: 5,
+    body: `Bitcoin broke above $117,000 for the first time in weeks as spot exchange-traded funds absorbed record inflows. The rally extended into Ethereum and smaller tokens, lifting the total market capitalization of digital assets to fresh highs.\n\nSpot Bitcoin ETFs recorded their largest weekly inflow since June, according to data from major fund issuers. Institutional allocations continued to dominate flows, while leveraged futures open interest rose more modestly.\n\nAnalysts said the move was driven by renewed optimism around regulatory clarity and improving macro liquidity. Ethereum followed Bitcoin higher, and Solana outperformed most large-cap alternatives.\n\nThe latest inflows bring total assets under management in spot Bitcoin products to a new record. Some strategists cautioned that short-term sentiment is becoming stretched, though longer-term holders remain net buyers.\n\nThe next catalyst for crypto markets will likely be any fresh commentary from U.S. regulators and the path of the dollar over the rest of the quarter.`,
     image: IMG.crypto,
   },
   {
@@ -101,6 +105,7 @@ export const articles: Article[] = [
     author: "Sagar Thapa",
     publishedAt: "2026-09-20T23:20:00Z",
     readMinutes: 3,
+    body: `The Nepali rupee held steady near 137.60 per U.S. dollar on Monday, supported by a seasonal pickup in remittance inflows and improving foreign exchange reserves.\n\nWorkers' remittances, a key source of dollars for the economy, rose compared with the same month last year, giving the central bank more room to manage import bills and debt payments.\n\nForex dealers said the currency pair is likely to stay in a narrow band in the near term, barring a sharp move in the Indian rupee to which the Nepali rupee is pegged.\n\nImproving reserves have also reduced pressure on import financing. Economists noted that a stable exchange rate is helping anchor inflation expectations after a volatile period last year.\n\nFor importers and borrowers with dollar liabilities, the calm spell offers a window to hedge exposures before any potential volatility returns.`,
     image: IMG.forex,
   },
   {
@@ -114,6 +119,7 @@ export const articles: Article[] = [
     author: "Rabin Adhikari",
     publishedAt: "2026-09-20T21:05:00Z",
     readMinutes: 4,
+    body: `Gold slipped below $3,400 an ounce on Friday as investors locked in profits following a six-week rally that had pushed bullion to successive record highs.\n\nThe pullback was modest in percentage terms and came on light trading volume, suggesting position squaring rather than a change in the broader uptrend. Spot gold settled near $3,388, while silver and platinum also eased.\n\nCentral banks remain the most consistent buyers of physical gold, with several emerging-market monetary authorities adding to reserves in recent months. That underlying demand is one reason analysts think any correction may be shallow.\n\nA softer dollar and still-elevated geopolitical risk are also providing a floor, traders said. Many have raised year-end price targets, though they warn that a rapid run-up often invites short-term profit taking.\n\nFor long-term holders, the current range is seen as a healthy consolidation within a structural bull market.`,
     image: IMG.gold,
   },
   {
@@ -127,6 +133,7 @@ export const articles: Article[] = [
     author: "Anish Shrestha",
     publishedAt: "2026-09-20T18:40:00Z",
     readMinutes: 7,
+    body: `Nepal Rastra Bank is widely expected to keep policy rates unchanged at its first-quarter monetary review, but the accompanying statement will be closely parsed for shifts in tone on credit growth and bad-loan provisioning.\n\nHeadline inflation has cooled from last year's peaks, giving the central bank some room to focus on financial stability rather than immediate tightening. Credit growth, however, has slowed more than policymakers would like.\n\nThe debate among economists centers on whether NRB will nudge banks toward higher loan-loss provisions, especially for exposures to sectors that saw rapid credit expansion in recent years. Such a move could tighten credit conditions even without a rate hike.\n\nCommercial banks have argued that provisioning rules should remain stable to avoid choking productive lending. Meanwhile, smaller borrowers say credit is already hard to access outside the largest institutions.\n\nWhatever the outcome, the review is likely to set the tone for bank earnings, liquidity and the NEPSE index through the rest of the quarter.`,
     image: IMG.bank,
   },
   {
@@ -140,6 +147,7 @@ export const articles: Article[] = [
     author: "Maya Gurung",
     publishedAt: "2026-09-20T15:30:00Z",
     readMinutes: 8,
+    body: `Earnings season is noisy. Every headline screams "beat" or "miss" against analyst estimates, but the headline earnings-per-share number is often the least informative figure for where a stock goes next.\n\nStart with margins. A company that beats EPS by cutting costs is telling a very different story from one that beats by raising prices and expanding market share. Gross margin and operating margin trends reveal whether the business is getting stronger or simply leaner.\n\nSecond, watch cash flow. Accounting earnings can be managed; cash is harder to fake. Free cash flow growth, capital discipline and working-capital trends tell you if a business is converting profits into real money.\n\nThird, follow buyback and dividend signals. A management team that raises guidance while expanding buybacks is usually more confident than one that beats EPS but keeps the full-year forecast unchanged.\n\nFor investors, the goal is to look past the headline and read the body language of the business. The numbers that matter are rarely the ones in the press release's first paragraph.`,
     image: IMG.analysis,
   },
   {
@@ -153,6 +161,7 @@ export const articles: Article[] = [
     author: "Rabin Adhikari",
     publishedAt: "2026-09-20T13:15:00Z",
     readMinutes: 5,
+    body: `Wall Street's artificial-intelligence spending boom is accelerating. The largest technology companies raised full-year capital-expenditure guidance again this quarter, extending a rally that has added trillions of dollars in market value.\n\nData-center demand is the primary driver. Cloud providers are racing to deploy more powerful chips and expand power and cooling capacity to train and serve the next generation of AI models.\n\nChipmakers and component suppliers have been the clearest beneficiaries, with order books stretching well into next year. Investors are also bidding up utilities and energy companies expected to power new facilities.\n\nNot everyone is convinced the spending is efficient. Some analysts warn that returns on these massive investments may take longer than the market expects, and that valuations already price in years of growth.\n\nFor now, the momentum remains strong. The next test will be whether revenue from AI services starts to match the scale of the infrastructure being built.`,
     image: IMG.stocks,
   },
 ]
@@ -189,4 +198,68 @@ export function timeAgo(iso: string): string {
   if (hours < 1) return "Just now"
   if (hours < 24) return `${hours}h ago`
   return `${Math.floor(hours / 24)}d ago`
+}
+
+export const allArticles = [featuredArticle, ...articles]
+
+export function getArticleBySlug(slug: string): Article | undefined {
+  return allArticles.find((a) => a.slug === slug)
+}
+
+export function getArticlesByCategory(category: Category): Article[] {
+  return allArticles
+    .filter((a) => a.category === category)
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+}
+
+export function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  })
+}
+
+export const categoryInfo = {
+  markets: {
+    label: "Markets",
+    tagline: "The biggest moves across stocks, crypto, forex, commodities and NEPSE.",
+    image: IMG.hero,
+  },
+  stocks: {
+    label: "Stocks",
+    tagline: "Equities, indices and the companies moving markets.",
+    image: IMG.stocks,
+  },
+  crypto: {
+    label: "Crypto",
+    tagline: "Bitcoin, Ethereum and the digital asset economy.",
+    image: IMG.crypto,
+  },
+  forex: {
+    label: "Forex",
+    tagline: "Currencies, central banks and the global exchange picture.",
+    image: IMG.forex,
+  },
+  nepse: {
+    label: "NEPSE",
+    tagline: "Nepal Stock Exchange news, movers and market snapshots.",
+    image: IMG.nepse,
+  },
+  analysis: {
+    label: "Analysis",
+    tagline: "Deeper reads on trends, earnings and market strategy.",
+    image: IMG.analysis,
+  },
+  commodities: {
+    label: "Commodities",
+    tagline: "Gold, oil and the raw materials shaping trade.",
+    image: IMG.gold,
+  },
+} as const
+
+export const categorySlugs = Object.keys(categoryInfo)
+
+export function isValidCategory(slug: string): slug is keyof typeof categoryInfo {
+  return categorySlugs.includes(slug)
 }
