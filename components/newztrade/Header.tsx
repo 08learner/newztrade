@@ -52,12 +52,13 @@ export function Header() {
           <div className="flex items-center gap-4">
             <MarketClock />
             <ThemeToggle />
-            <button
+            <Link
+              href="/search"
               aria-label="Search"
               className="grid size-9 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
             >
               <Search className="size-4" />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -40,6 +40,25 @@ export function Footer() {
                 </Link>
               ))}
             </nav>
+            <nav className="grid gap-y-3" aria-label="Tools">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-foreground">
+                Tools
+              </p>
+              {[
+                { label: "Watchlist", href: "/watchlist" },
+                { label: "Market Calendar", href: "/calendar" },
+                { label: "Learn", href: "/learn" },
+                { label: "Search", href: "/search" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
             <nav className="grid gap-y-3" aria-label="Company">
               <p className="text-[11px] font-bold uppercase tracking-widest text-foreground">
                 Company

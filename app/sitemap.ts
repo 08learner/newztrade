@@ -1,11 +1,21 @@
 import type { MetadataRoute } from "next"
-import { allArticles, categorySlugs, instruments } from "@/lib/data"
+import { allArticles, categorySlugs, glossarySlugs, instruments } from "@/lib/data"
 import { digests } from "@/lib/digest"
 
 const BASE_URL = "https://newztrade.com"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/about", "/contact", "/privacy", "/terms", "/daily"].map(
+  const staticRoutes = [
+    "",
+    "/about",
+    "/contact",
+    "/privacy",
+    "/terms",
+    "/daily",
+    "/watchlist",
+    "/calendar",
+    "/learn",
+  ].map(
     (path) => ({
       url: `${BASE_URL}${path}`,
       lastModified: new Date(),
@@ -32,11 +42,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }))
 
+  const learnRoutes = glossarySlugs.map((slug) => ({
+    url: `${BASE_URL}/learn/${slug}`,
+    lastModified: new Date(),
+  }))
+
   return [
     ...staticRoutes,
     ...categoryRoutes,
     ...articleRoutes,
     ...digestRoutes,
     ...instrumentRoutes,
+    ...learnRoutes,
   ]
 }

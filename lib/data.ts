@@ -722,3 +722,237 @@ export const categorySlugs = Object.keys(categoryInfo)
 export function isValidCategory(slug: string): slug is keyof typeof categoryInfo {
   return categorySlugs.includes(slug)
 }
+
+// ---------------------------------------------------------------------------
+// Learn / glossary — SEO-friendly explainers. Becomes a Supabase table later.
+// ---------------------------------------------------------------------------
+
+export interface GlossaryTerm {
+  slug: string
+  term: string
+  definition: string
+  body: string
+  keywords: string[]
+}
+
+export interface SearchResults {
+  articles: Article[]
+  instruments: Instrument[]
+  glossary: GlossaryTerm[]
+}
+
+/** Case-insensitive search across articles, instruments and glossary terms. */
+export function searchAll(query: string): SearchResults {
+  const q = query.trim().toLowerCase()
+  const empty: SearchResults = { articles: [], instruments: [], glossary: [] }
+  if (!q) return empty
+  const matches = (text: string) => text.toLowerCase().includes(q)
+  return {
+    articles: allArticles.filter(
+      (a) =>
+        matches(a.title) ||
+        matches(a.excerpt) ||
+        matches(a.category) ||
+        matches(a.author) ||
+        matches(a.body)
+    ),
+    instruments: instruments.filter(
+      (i) =>
+        matches(i.symbol) ||
+        matches(i.name) ||
+        matches(i.market) ||
+        i.keywords.some((k) => matches(k))
+    ),
+    glossary: glossaryTerms.filter(
+      (t) => matches(t.term) || matches(t.definition) || t.keywords.some((k) => matches(k))
+    ),
+  }
+}
+
+export const glossaryTerms: GlossaryTerm[] = [
+  {
+    slug: "what-is-nepse",
+    term: "What is NEPSE?",
+    definition:
+      "NEPSE is the Nepal Stock Exchange, the country's only stock exchange, where shares of banks, hydropower companies and other listed firms trade Sunday to Thursday.",
+    body: `The Nepal Stock Exchange (NEPSE) is Nepal's only stock exchange, established in 1994 and headquartered in Kathmandu. It lists commercial banks, development banks, hydropower companies, insurers, microfinance institutions and other public companies.\n\nNEPSE trades Sunday through Thursday, 11:00 AM to 3:00 PM Nepal time, and remains closed on Fridays, Saturdays and public holidays. The NEPSE Index tracks the overall market, while sub-indices cover sectors like banking and hydropower.\n\nMost trading happens through a broker using an online TMS (Trade Management System) account, with settlement handled via CDS and Clearing. For most Nepali investors, the NEPSE index level and daily turnover are the first numbers they check each day.`,
+    keywords: ["NEPSE", "Nepal Stock Exchange", "what is nepse", "nepse trading hours", "nepali share market"],
+  },
+  {
+    slug: "market-capitalization",
+    term: "Market Capitalization",
+    definition:
+      "Market capitalization is the total value of a company's shares — its share price multiplied by the number of shares outstanding.",
+    body: `Market capitalization (market cap) measures the total value the stock market assigns to a company. It equals the current share price multiplied by the total number of shares outstanding.\n\nInvestors use market cap to compare company size: a bank trading at NPR 500 with 270 million shares has a market cap of about NPR 135 billion. Large-cap companies tend to be more stable, while small-cap companies can grow faster but swing more in price.\n\nOn NEPSE, commercial banks and large hydropower developers carry the biggest market caps, which is why their price moves dominate the index.`,
+    keywords: ["market cap", "market capitalization", "company valuation", "large cap", "small cap"],
+  },
+  {
+    slug: "dividend",
+    term: "Dividend",
+    definition:
+      "A dividend is a portion of a company's profit paid out to shareholders, in cash or as bonus shares.",
+    body: `A dividend is a distribution of a company's earnings to its shareholders. Companies can pay cash dividends directly to bank accounts or issue bonus shares that increase the number of shares each investor holds.\n\nIn Nepal, dividends are a major reason investors hold bank and hydropower shares. NEPSE-listed companies typically declare dividends after their fiscal year ends in mid-July, subject to approval at the annual general meeting.\n\nThe dividend yield — annual dividend divided by share price — lets investors compare income potential across stocks. A share trading at NPR 500 paying NPR 25 per year yields 5%.`,
+    keywords: ["dividend", "bonus shares", "cash dividend", "dividend yield", "NEPSE dividend"],
+  },
+  {
+    slug: "circuit-breaker",
+    term: "Circuit Breaker",
+    definition:
+      "A circuit breaker is an automatic trading halt that pauses the market when prices move too far, too fast, giving investors time to absorb news.",
+    body: `A circuit breaker is an automatic mechanism that temporarily halts trading when prices fall or rise beyond a set threshold. Its purpose is to cool panic or mania and give the market time to process new information.\n\nOn NEPSE, index-level circuit breakers pause trading across the whole market when the index moves sharply within a session, while individual stocks have daily price limits — often called upper and lower circuits — beyond which they cannot trade that day.\n\nCircuit breakers do not stop a trend; they slow it. Traders watch circuit-hit stocks closely because the next session often opens with pent-up orders.`,
+    keywords: ["circuit breaker", "upper circuit", "lower circuit", "trading halt", "NEPSE circuit"],
+  },
+  {
+    slug: "bull-and-bear-market",
+    term: "Bull and Bear Market",
+    definition:
+      "A bull market is a sustained period of rising prices and optimism; a bear market is a sustained decline, usually 20% or more from a peak.",
+    body: `Markets move in broad cycles. A bull market describes a sustained rise in prices accompanied by optimism and growing participation; a bear market describes a sustained decline, conventionally 20% or more from a recent high, accompanied by pessimism.\n\nThe names come from how each animal attacks: bulls thrust their horns upward, bears swipe downward. NEPSE has seen both — multi-year bull runs driven by cheap credit and new listings, and bear phases when liquidity tightened.\n\nNeither lasts forever. Long-term investors generally care less about labeling the market and more about buying quality assets at sensible prices.`,
+    keywords: ["bull market", "bear market", "market cycle", "stock market trend"],
+  },
+  {
+    slug: "pe-ratio",
+    term: "P/E Ratio",
+    definition:
+      "The price-to-earnings ratio compares a company's share price to its earnings per share, showing how much investors pay for each rupee of profit.",
+    body: `The price-to-earnings (P/E) ratio divides a company's share price by its earnings per share (EPS). A stock trading at NPR 500 with EPS of NPR 50 has a P/E of 10 — investors pay 10 rupees for every rupee of annual profit.\n\nA high P/E suggests investors expect strong future growth; a low P/E can signal an undervalued stock or a company facing trouble. P/E is most useful when comparing companies in the same sector, like two commercial banks on NEPSE.\n\nThe P/E ratio says nothing by itself about risk, balance-sheet strength or dividend quality, so investors combine it with other measures.`,
+    keywords: ["P/E ratio", "price to earnings", "EPS", "stock valuation", "NEPSE valuation"],
+  },
+  {
+    slug: "ipo",
+    term: "IPO (Initial Public Offering)",
+    definition:
+      "An IPO is a company's first sale of shares to the public, letting anyone apply to become a shareholder through the exchange.",
+    body: `An initial public offering (IPO) is the first time a company sells its shares to the general public. In Nepal, IPO applications go through the Mero Share platform using an ASBA-linked bank account, making the process accessible to small investors.\n\nNEPSE IPOs are frequently oversubscribed many times over, so allotments are often decided by lottery. Hydropower IPOs in particular draw millions of applications because of the sector's popularity with retail investors.\n\nAfter allotment, shares are listed on NEPSE and can be traded freely. An IPO's first-day price can jump well above its issue price — but that premium is never guaranteed.`,
+    keywords: ["IPO", "initial public offering", "Mero Share", "ASBA", "NEPSE IPO", "hydropower IPO"],
+  },
+  {
+    slug: "liquidity",
+    term: "Liquidity",
+    definition:
+      "Liquidity describes how easily an asset can be bought or sold without moving its price — high-turnover stocks are liquid, thinly traded ones are not.",
+    body: `Liquidity measures how quickly and cheaply you can convert an asset to cash. A liquid stock trades in large volumes every day, so you can sell without pushing the price down; an illiquid stock may have few buyers at any moment.\n\nOn NEPSE, commercial bank shares are highly liquid while some small companies trade only a handful of times per session. Daily turnover — the total rupee value traded — is the market's broadest liquidity gauge.\n\nLiquidity also describes the banking system itself: when Nepal Rastra Bank tightens money supply, loanable funds shrink, interest rates rise, and the stock market often cools.`,
+    keywords: ["liquidity", "turnover", "trading volume", "NRB liquidity", "liquid stocks"],
+  },
+  {
+    slug: "portfolio-diversification",
+    term: "Portfolio Diversification",
+    definition:
+      "Diversification means spreading money across different assets and sectors so that one bad investment cannot sink the whole portfolio.",
+    body: `Diversification is the practice of spreading investments across different assets, sectors and markets so no single loss can seriously damage the whole portfolio. It is often summarized as 'don't put all your eggs in one basket.'\n\nA Nepali investor might diversify across banking and hydropower stocks, add fixed deposits, hold some gold, and keep cash for emergencies. Global investors add foreign indices and bonds to the mix.\n\nDiversification reduces risk but cannot eliminate it. When entire markets fall together — as in a broad bear market — even diversified portfolios decline, just usually less severely.`,
+    keywords: ["diversification", "portfolio", "asset allocation", "risk management", "investment portfolio"],
+  },
+  {
+    slug: "exchange-rate",
+    term: "Exchange Rate",
+    definition:
+      "An exchange rate is the price of one currency in terms of another — for example, how many Nepali rupees one US dollar buys today.",
+    body: `An exchange rate expresses the value of one currency in another. When USD/NPR is 137.62, one US dollar buys 137.62 Nepali rupees. Rates move with interest-rate differences, trade balances, inflation and capital flows.\n\nNepal's rupee is pegged to the Indian rupee at a fixed rate, so USD/NPR largely follows the dollar-rupee (USD/INR) market. Remittances from Nepali workers abroad are the country's biggest source of foreign currency, making the dollar rate a household topic.\n\nFor traders, exchange rates are themselves a market: forex pairs like EUR/USD and USD/JPY are the most traded instruments in the world.`,
+    keywords: ["exchange rate", "USD NPR", "dollar rate", "forex", "currency peg", "remittance"],
+  },
+]
+
+export const glossarySlugs = glossaryTerms.map((t) => t.slug)
+
+export function getGlossaryTermBySlug(slug: string): GlossaryTerm | undefined {
+  return glossaryTerms.find((t) => t.slug === slug)
+}
+
+// ---------------------------------------------------------------------------
+// Market calendar — illustrative upcoming events. Becomes a table later.
+// ---------------------------------------------------------------------------
+
+export type MarketEventType = "Earnings" | "Holiday" | "Macro" | "IPO"
+
+export interface MarketEvent {
+  date: string // ISO date
+  type: MarketEventType
+  title: string
+  description: string
+}
+
+export const marketEvents: MarketEvent[] = [
+  {
+    date: "2026-09-25",
+    type: "Macro",
+    title: "Nepal Rastra Bank monetary policy review",
+    description:
+      "NRB's quarterly review sets the tone for interest rates and bank liquidity — the single biggest driver of NEPSE sentiment.",
+  },
+  {
+    date: "2026-09-28",
+    type: "IPO",
+    title: "Sanima Middle Tamor Hydropower IPO closes",
+    description:
+      "Subscription window for the Tamor corridor hydropower issue closes at the end of trading. Oversubscription is expected.",
+  },
+  {
+    date: "2026-10-02",
+    type: "Holiday",
+    title: "NEPSE closed — Dashain (Ghatasthapana)",
+    description:
+      "The Nepal Stock Exchange is closed for the start of the Dashain festival. Trading resumes after the holiday period.",
+  },
+  {
+    date: "2026-10-06",
+    type: "Holiday",
+    title: "NEPSE closed — Dashain (Fulpati)",
+    description: "No trading on the Nepal Stock Exchange during the Dashain public holiday.",
+  },
+  {
+    date: "2026-10-20",
+    type: "Holiday",
+    title: "NEPSE closed — Tihar (Laxmi Puja)",
+    description:
+      "The exchange is closed for Laxmi Puja. Muhurat-style sentiment often lifts the first session after the festival.",
+  },
+  {
+    date: "2026-10-14",
+    type: "Earnings",
+    title: "Nabil Bank Q1 results",
+    description:
+      "Nepal's largest commercial bank reports first-quarter earnings. Net interest margin and loan growth guide the banking sector.",
+  },
+  {
+    date: "2026-10-16",
+    type: "Earnings",
+    title: "Upper Tamakoshi quarterly report",
+    description:
+      "The hydropower bellwether reports quarterly generation and revenue. Watch monsoon-season output versus guidance.",
+  },
+  {
+    date: "2026-10-21",
+    type: "Earnings",
+    title: "NVIDIA quarterly earnings",
+    description:
+      "The AI chipmaker's results move global tech sentiment, including Nasdaq futures and crypto-adjacent equities.",
+  },
+  {
+    date: "2026-10-28",
+    type: "Macro",
+    title: "US Federal Reserve rate decision",
+    description:
+      "The FOMC announces its policy decision. A pause or cut would support global equities and pressure the dollar.",
+  },
+  {
+    date: "2026-10-30",
+    type: "Macro",
+    title: "US inflation print (CPI)",
+    description:
+      "The consumer price index release shapes expectations for the Fed's December meeting and bond yields.",
+  },
+  {
+    date: "2026-11-05",
+    type: "IPO",
+    title: "Jyoti Life Insurance rights issue opens",
+    description:
+      "Existing shareholders can subscribe to additional shares. Rights issues often pressure the secondary price short-term.",
+  },
+  {
+    date: "2026-11-12",
+    type: "Macro",
+    title: "India CPI and industrial output",
+    description:
+      "Indian macro data matters directly for Nepal because of the currency peg and cross-border trade flows.",
+  },
+]
