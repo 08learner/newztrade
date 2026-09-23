@@ -4,6 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { navItems } from "@/lib/data"
 import { Search, Zap } from "lucide-react"
+import { MarketClock } from "@/components/newztrade/MarketClock"
+import { ThemeToggle } from "@/components/newztrade/ThemeToggle"
 
 function categoryHref(item: string) {
   return item === "Markets" ? "/" : `/${item.toLowerCase()}`
@@ -48,10 +50,8 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-4">
-            <span className="hidden lg:flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span className="size-1.5 rounded-full bg-up animate-pulse" />
-              Markets open · edited in JBOX round 4
-            </span>
+            <MarketClock />
+            <ThemeToggle />
             <button
               aria-label="Search"
               className="grid size-9 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"

@@ -11,6 +11,8 @@ import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
 import { NotFoundBlock } from "@/components/newztrade/NotFoundBlock"
+import { ReadingProgress } from "@/components/newztrade/ReadingProgress"
+import { BackToTop } from "@/components/newztrade/BackToTop"
 import { ArrowLeft, Clock } from "lucide-react"
 
 export async function generateStaticParams() {
@@ -81,6 +83,7 @@ export default async function ArticlePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <ReadingProgress />
       <Header />
       <main>
         <article className="mx-auto max-w-7xl px-4 sm:px-6 pt-8 pb-12">
@@ -149,6 +152,7 @@ export default async function ArticlePage({
           </div>
         </section>
       </main>
+      <BackToTop />
       <Footer />
     </div>
   )
