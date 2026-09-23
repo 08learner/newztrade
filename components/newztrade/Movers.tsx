@@ -1,15 +1,18 @@
 import Link from "next/link"
-import { getInstrumentBySymbol, movers } from "@/lib/data"
+import { getInstruments } from "@/lib/content"
+import { movers } from "@/lib/data"
 import { TrendingDown, TrendingUp } from "lucide-react"
 
 function MoverTable({
   title,
   tone,
   rows,
+  slugBySymbol,
 }: {
   title: string
   tone: "up" | "down"
   rows: { symbol: string; name: string; price: string; changePct: number }[]
+  slugBySymbol: Map<string, string>
 }) {
   const Icon = tone === "up" ? TrendingUp : TrendingDown
   return (
@@ -24,13 +27,13 @@ function MoverTable({
       </h3>
       <ul className="mt-4 divide-y divide-border">
         {rows.map((m) => {
-          const instrument = getInstrumentBySymbol(m.symbol)
+          const slug = slugBySymbol.get(m.symbol)
           return (
           <li key={m.symbol} className="flex items-center justify-between gap-3 py-3">
             <div className="min-w-0">
-              {instrument ? (
+              {slug ? (
                 <Link
-                  href={`/instrument/${instrument.slug}`}
+                  href={`/instrument/${slug}`}
                   className="text-sm font-semibold hover:text-up hover:underline underline-offset-2 transition-colors"
                 >
                   {m.symbol}
@@ -59,7 +62,9 @@ function MoverTable({
   )
 }
 
-export function Movers() {
+export async function Movers() {
+  const instruments = await getInstruments()
+  const slugBySymbol = new Map(instruments.map((i) => [i.symbol, i.slug]))
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 py-14">
       <div className="flex items-baseline justify-between border-b-2 border-foreground pb-3 mb-8">
@@ -67,8 +72,8 @@ export function Movers() {
         <span className="text-xs text-muted-foreground">Across NEPSE & global markets</span>
       </div>
       <div className="grid gap-6 md:grid-cols-2">
-        <MoverTable title="Top Gainers" tone="up" rows={movers.gainers} />
-        <MoverTable title="Top Losers" tone="down" rows={movers.losers} />
+        <MoverTable title="Top Gainers" tone="up" rows={movers.gainers} slugBySymbol={slugBySymbol} />
+        <MoverTable title="Top Losers" tone="down" rows={movers.losers} slugBySymbol={slugBySymbol} />
       </div>
     </section>
   )

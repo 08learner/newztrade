@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next"
-import { allArticles, categorySlugs, glossarySlugs, instruments } from "@/lib/data"
-import { digests } from "@/lib/digest"
+import { categorySlugs } from "@/lib/data"
+import { getSiteContent } from "@/lib/content"
 
 const BASE_URL = "https://newztrade.com"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const { articles, instruments, glossaryTerms, digests } = await getSiteContent()
   const staticRoutes = [
     "",
     "/about",
@@ -27,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }))
 
-  const articleRoutes = allArticles.map((a) => ({
+  const articleRoutes = articles.map((a) => ({
     url: `${BASE_URL}/news/${a.slug}`,
     lastModified: new Date(a.publishedAt),
   }))
@@ -42,8 +43,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }))
 
-  const learnRoutes = glossarySlugs.map((slug) => ({
-    url: `${BASE_URL}/learn/${slug}`,
+  const learnRoutes = glossaryTerms.map((t) => ({
+    url: `${BASE_URL}/learn/${t.slug}`,
     lastModified: new Date(),
   }))
 

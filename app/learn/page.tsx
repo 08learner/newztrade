@@ -1,6 +1,6 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { glossaryTerms } from "@/lib/data"
+import { getGlossaryTerms } from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { GraduationCap } from "lucide-react"
@@ -11,7 +11,8 @@ export const metadata: Metadata = {
     "Plain-language explainers for traders and investors: what NEPSE is, how dividends work, P/E ratios, circuit breakers, IPOs and more.",
 }
 
-export default function LearnPage() {
+export default async function LearnPage() {
+  const glossaryTerms = await getGlossaryTerms()
   return (
     <div className="min-h-screen bg-background">
       <Header />

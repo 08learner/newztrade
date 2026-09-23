@@ -1,12 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import type { Metadata } from "next"
+import { formatDate } from "@/lib/data"
 import {
-  allArticles,
-  getArticleBySlug,
-  getArticlesByCategory,
-  formatDate,
-} from "@/lib/data"
+  getArticles,
+  getArticleBySlugAsync,
+  getArticlesByCategoryAsync,
+} from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
@@ -17,7 +17,8 @@ import { TrendingRail } from "@/components/newztrade/TrendingRail"
 import { ArrowLeft, Clock } from "lucide-react"
 
 export async function generateStaticParams() {
-  return allArticles.map((a) => ({ slug: a.slug }))
+  const articles = await getArticles()
+  return articles.map((a) => ({ slug: a.slug }))
 }
 
 export async function generateMetadata({
@@ -26,7 +27,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const article = getArticleBySlug(slug)
+  const article = await getArticleBySlugAsync(slug)
   if (!article) return { title: "Not found — NewzTrade" }
   return {
     title: `${article.title} — NewzTrade`,
@@ -40,7 +41,7 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const article = getArticleBySlug(slug)
+  const article = await getArticleBySlugAsync(slug)
 
   if (!article) {
     return (
@@ -55,12 +56,12 @@ export default async function ArticlePage({
     )
   }
 
-  let related = getArticlesByCategory(article.category)
+  let related = (await getArticlesByCategoryAsync(article.category))
     .filter((a) => a.slug !== article.slug)
     .slice(0, 3)
 
   if (related.length < 3) {
-    const more = allArticles.filter(
+    const more = (await getArticles()).filter(
       (a) => a.slug !== article.slug && !related.some((r) => r.slug === a.slug)
     )
     related = [...related, ...more.slice(0, 3 - related.length)]

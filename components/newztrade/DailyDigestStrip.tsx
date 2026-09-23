@@ -1,8 +1,9 @@
 import Link from "next/link"
-import { currentDigests } from "@/lib/digest"
+import { getCurrentDigests } from "@/lib/content"
 import { CalendarDays, ChevronRight } from "lucide-react"
 
-export function DailyDigestStrip() {
+export async function DailyDigestStrip() {
+  const currentDigests = await getCurrentDigests()
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-14">
       <div className="flex items-baseline justify-between border-b-2 border-foreground pb-3 mb-6">

@@ -1,18 +1,15 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import {
-  glossaryTerms,
-  glossarySlugs,
-  getGlossaryTermBySlug,
-  formatDate,
-} from "@/lib/data"
+import { formatDate } from "@/lib/data"
+import { getGlossaryTerms, getGlossaryTermBySlugAsync } from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { NotFoundBlock } from "@/components/newztrade/NotFoundBlock"
 import { ArrowLeft, GraduationCap } from "lucide-react"
 
 export async function generateStaticParams() {
-  return glossarySlugs.map((slug) => ({ slug }))
+  const terms = await getGlossaryTerms()
+  return terms.map((t) => ({ slug: t.slug }))
 }
 
 export async function generateMetadata({
@@ -21,7 +18,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const term = getGlossaryTermBySlug(slug)
+  const term = await getGlossaryTermBySlugAsync(slug)
   if (!term) return { title: "Not found — NewzTrade" }
   return {
     title: `${term.term} — NewzTrade Learn`,
@@ -36,7 +33,7 @@ export default async function GlossaryTermPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const term = getGlossaryTermBySlug(slug)
+  const term = await getGlossaryTermBySlugAsync(slug)
 
   if (!term) {
     return (
@@ -51,7 +48,7 @@ export default async function GlossaryTermPage({
     )
   }
 
-  const related = glossaryTerms.filter((t) => t.slug !== term.slug).slice(0, 3)
+  const related = (await getGlossaryTerms()).filter((t) => t.slug !== term.slug).slice(0, 3)
 
   const jsonLd = {
     "@context": "https://schema.org",

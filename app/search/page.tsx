@@ -1,7 +1,6 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { searchAll } from "@/lib/data"
-import { digests } from "@/lib/digest"
+import { searchSite } from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
@@ -20,13 +19,8 @@ export default async function SearchPage({
 }) {
   const { q = "" } = await searchParams
   const query = q.trim()
-  const results = searchAll(query)
-  const digestMatches = query
-    ? digests.filter((d) => {
-        const hay = `${d.title} ${d.summary.join(" ")} ${d.keywords.join(" ")}`.toLowerCase()
-        return hay.includes(query.toLowerCase())
-      })
-    : []
+  const results = await searchSite(query)
+  const digestMatches = results.digests
   const total =
     results.articles.length +
     results.instruments.length +

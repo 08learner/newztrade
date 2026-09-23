@@ -1,21 +1,23 @@
 import Link from "next/link"
-import { getInstrumentBySymbol, tickerQuotes } from "@/lib/data"
+import { getInstruments, getTickerQuotes } from "@/lib/content"
+import type { Quote } from "@/lib/data"
 import { TrendingDown, TrendingUp } from "lucide-react"
 
 function TickerItem({
   symbol,
   price,
   changePct,
+  href,
 }: {
   symbol: string
   price: string
   changePct: number
+  href: string
 }) {
   const up = changePct >= 0
-  const instrument = getInstrumentBySymbol(symbol)
   return (
     <Link
-      href={instrument ? `/instrument/${instrument.slug}` : "/"}
+      href={href}
       className="flex items-center gap-2.5 px-5 py-2 shrink-0 hover:bg-white/5 transition-colors">
       <span className="text-[11px] font-semibold tracking-wide text-white/90 uppercase">
         {symbol}
@@ -38,14 +40,23 @@ function TickerItem({
   )
 }
 
-export function TickerBar() {
-  const items = [...tickerQuotes, ...tickerQuotes]
+export async function TickerBar() {
+  const [quotes, instruments] = await Promise.all([getTickerQuotes(), getInstruments()])
+  const slugBySymbol = new Map(instruments.map((i) => [i.symbol, i.slug]))
+  const items: Quote[] = [...quotes, ...quotes]
   return (
     <div className="bg-[#101418] overflow-hidden" aria-label="Live market ticker">
       <div className="ticker-track flex w-max">
-        {items.map((q, i) => (
-          <TickerItem key={`${q.symbol}-${i}`} {...q} />
-        ))}
+        {items.map((q, i) => {
+          const slug = slugBySymbol.get(q.symbol)
+          return (
+            <TickerItem
+              key={`${q.symbol}-${i}`}
+              {...q}
+              href={slug ? `/instrument/${slug}` : "/"}
+            />
+          )
+        })}
       </div>
     </div>
   )

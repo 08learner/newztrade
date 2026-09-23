@@ -1,10 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
-import { articles, nepseSnapshot, IMG, timeAgo } from "@/lib/data"
+import { getArticlesByCategoryAsync } from "@/lib/content"
+import { nepseSnapshot, IMG, timeAgo } from "@/lib/data"
 import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 
-export function NepseSpotlight() {
-  const nepseArticles = articles.filter((a) => a.category === "NEPSE").slice(0, 2)
+export async function NepseSpotlight() {
+  const nepseArticles = (await getArticlesByCategoryAsync("NEPSE")).slice(0, 2)
   const up = nepseSnapshot.changePct >= 0
 
   return (

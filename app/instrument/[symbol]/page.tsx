@@ -1,12 +1,11 @@
 import Link from "next/link"
 import type { Metadata } from "next"
+import { numericPrice, sparklinePoints } from "@/lib/data"
 import {
-  getInstrumentBySlug,
-  getRelatedArticles,
-  instruments,
-  numericPrice,
-  sparklinePoints,
-} from "@/lib/data"
+  getInstrumentBySlugAsync,
+  getInstruments,
+  getRelatedArticlesAsync,
+} from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
@@ -14,6 +13,7 @@ import { NotFoundBlock } from "@/components/newztrade/NotFoundBlock"
 import { ArrowLeft, TrendingDown, TrendingUp } from "lucide-react"
 
 export async function generateStaticParams() {
+  const instruments = await getInstruments()
   return instruments.map((i) => ({ symbol: i.slug }))
 }
 
@@ -23,7 +23,7 @@ export async function generateMetadata({
   params: Promise<{ symbol: string }>
 }): Promise<Metadata> {
   const { symbol } = await params
-  const instrument = getInstrumentBySlug(symbol)
+  const instrument = await getInstrumentBySlugAsync(symbol)
   if (!instrument) return { title: "Instrument not found — NewzTrade" }
   const title = `${instrument.name} (${instrument.symbol}) Price Today — NewzTrade`
   return {
@@ -78,7 +78,7 @@ export default async function InstrumentPage({
   params: Promise<{ symbol: string }>
 }) {
   const { symbol } = await params
-  const instrument = getInstrumentBySlug(symbol)
+  const instrument = await getInstrumentBySlugAsync(symbol)
 
   if (!instrument) {
     return (
@@ -95,7 +95,7 @@ export default async function InstrumentPage({
 
   const up = instrument.changePct >= 0
   const points = sparklinePoints(instrument.slug, numericPrice(instrument.price))
-  const related = getRelatedArticles(instrument).slice(0, 3)
+  const related = (await getRelatedArticlesAsync(instrument)).slice(0, 3)
   const Icon = up ? TrendingUp : TrendingDown
 
   const jsonLd = {

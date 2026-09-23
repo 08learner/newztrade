@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { instruments, type Instrument } from "@/lib/data"
+import type { Instrument } from "@/lib/data"
 import { ArrowDownRight, ArrowUpRight, Star, StarOff } from "lucide-react"
 
 const STORAGE_KEY = "nz-watchlist"
@@ -34,7 +34,7 @@ function ChangePill({ pct }: { pct: number }) {
   )
 }
 
-export function WatchlistClient() {
+export function WatchlistClient({ instruments }: { instruments: Instrument[] }) {
   const [slugs, setSlugs] = useState<string[] | null>(null)
 
   useEffect(() => {

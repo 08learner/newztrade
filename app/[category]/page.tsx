@@ -1,15 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
 import type { Metadata } from "next"
+import { categoryInfo, isValidCategory, nepseSnapshot, type Category } from "@/lib/data"
 import {
-  categoryInfo,
-  isValidCategory,
-  allArticles,
-  getArticlesByCategory,
-  tickerQuotes,
-  nepseSnapshot,
-  type Category,
-} from "@/lib/data"
+  getArticles,
+  getArticlesByCategoryAsync,
+  getTickerQuotes,
+} from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
@@ -146,11 +143,12 @@ export default async function CategoryPage({
   const info = categoryInfo[category]
   const isMarkets = info.label === "Markets"
   const stories = isMarkets
-    ? allArticles
-    : getArticlesByCategory(info.label as Category)
+    ? await getArticles()
+    : await getArticlesByCategoryAsync(info.label as Category)
   const featured = stories[0]
   const rest = stories.slice(1)
   const quotes = categoryQuotes[category] || []
+  const tickerQuotes = await getTickerQuotes()
 
   return (
     <div className="min-h-screen bg-background">

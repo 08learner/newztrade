@@ -1,6 +1,6 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { digests } from "@/lib/digest"
+import { getDigests } from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { CalendarDays, ChevronRight } from "lucide-react"
@@ -11,7 +11,8 @@ export const metadata: Metadata = {
     "Every auto-generated NewzTrade daily digest: NEPSE Today summaries and global Market Wraps, archived by date.",
 }
 
-export default function DailyArchivePage() {
+export default async function DailyArchivePage() {
+  const digests = await getDigests()
   const nepseDigests = digests.filter((d) => d.kind === "nepse-today")
   const wrapDigests = digests.filter((d) => d.kind === "market-wrap")
 

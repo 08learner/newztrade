@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { marketEvents, type MarketEventType } from "@/lib/data"
+import type { MarketEventType } from "@/lib/data"
+import { getMarketEvents } from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { CalendarDays, Landmark, PartyPopper, TrendingUp, FileText } from "lucide-react"
@@ -41,7 +42,8 @@ function formatEventDate(iso: string): { day: string; month: string; dow: string
   }
 }
 
-export default function CalendarPage() {
+export default async function CalendarPage() {
+  const marketEvents = await getMarketEvents()
   const sorted = [...marketEvents].sort((a, b) => a.date.localeCompare(b.date))
   const today = new Date().toISOString().slice(0, 10)
   const upcoming = sorted.filter((e) => e.date >= today)

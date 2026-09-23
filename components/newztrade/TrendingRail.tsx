@@ -1,15 +1,16 @@
 import Link from "next/link"
-import { getTrendingArticles, timeAgo } from "@/lib/data"
+import { getTrendingArticlesAsync } from "@/lib/content"
+import { timeAgo } from "@/lib/data"
 import { TrendingUp } from "lucide-react"
 
-export function TrendingRail({
+export async function TrendingRail({
   excludeSlug,
   className = "",
 }: {
   excludeSlug?: string
   className?: string
 }) {
-  const trending = getTrendingArticles(excludeSlug, 5)
+  const trending = await getTrendingArticlesAsync(excludeSlug, 5)
 
   return (
     <section aria-label="Most read today" className={className}>

@@ -1,15 +1,18 @@
-// Daily digest generator — derives dated market digest pages from the shared
-// demo source (lib/data.ts). When Supabase is connected, this module becomes
-// the read adapter over a digests table; page code must not change.
+// Daily digest generator — pure builders that compose dated market digests
+// from whatever content source is provided (Supabase via lib/content.ts, or
+// the bundled demo source in lib/data.ts as fallback).
 
 import {
-  allArticles,
   movers,
   nepseSnapshot,
-  tickerQuotes,
   type Article,
   type Quote,
 } from "./data"
+
+export interface DigestContext {
+  allArticles: Article[]
+  tickerQuotes: Quote[]
+}
 
 export interface Digest {
   slug: string
@@ -24,12 +27,6 @@ export interface Digest {
 }
 
 const DAY_MS = 86_400_000
-
-// Anchor the "publishing calendar" to the newest story date so generated
-// digests stay consistent with the demo content.
-const latestArticleMs = Math.max(
-  ...allArticles.map((a) => new Date(a.publishedAt).getTime())
-)
 
 function dateLabelFor(ms: number): string {
   return new Date(ms).toLocaleDateString("en-US", {
@@ -48,7 +45,8 @@ function directionWord(pct: number): string {
   return "was flat"
 }
 
-function buildNepseToday(dateMs: number): Digest {
+function buildNepseToday(dateMs: number, ctx: DigestContext): Digest {
+  const { allArticles, tickerQuotes } = ctx
   const dateLabel = dateLabelFor(dateMs)
   const up = nepseSnapshot.changePct >= 0
   const usdNpr = tickerQuotes.find((q) => q.symbol === "USD/NPR")!
@@ -81,7 +79,8 @@ function buildNepseToday(dateMs: number): Digest {
   }
 }
 
-function buildMarketWrap(dateMs: number): Digest {
+function buildMarketWrap(dateMs: number, ctx: DigestContext): Digest {
+  const { allArticles, tickerQuotes } = ctx
   const dateLabel = dateLabelFor(dateMs)
   const spx = tickerQuotes.find((q) => q.symbol === "S&P 500")!
   const btc = tickerQuotes.find((q) => q.symbol === "BTC/USD")!
@@ -114,15 +113,13 @@ function buildMarketWrap(dateMs: number): Digest {
 
 const RECENT_DAYS = 5
 
-export const digests: Digest[] = Array.from({ length: RECENT_DAYS }, (_, i) => {
-  const dateMs = latestArticleMs - i * DAY_MS
-  return [buildNepseToday(dateMs), buildMarketWrap(dateMs)]
-}).flat()
-
-export const currentDigests = digests.filter(
-  (d) => d.publishedAt === new Date(latestArticleMs).toISOString()
-)
-
-export function getDigestBySlug(slug: string): Digest | undefined {
-  return digests.find((d) => d.slug === slug)
+/** Build the recent digest set from a given content source. */
+export function buildDigests(ctx: DigestContext): Digest[] {
+  const anchorMs = Math.max(
+    ...ctx.allArticles.map((a) => new Date(a.publishedAt).getTime())
+  )
+  return Array.from({ length: RECENT_DAYS }, (_, i) => {
+    const dateMs = anchorMs - i * DAY_MS
+    return [buildNepseToday(dateMs, ctx), buildMarketWrap(dateMs, ctx)]
+  }).flat()
 }

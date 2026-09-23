@@ -1,7 +1,8 @@
-import { articles } from "@/lib/data"
+import { getArticles } from "@/lib/content"
 import { ArticleCard } from "./ArticleCard"
 
-export function NewsGrid() {
+export async function NewsGrid() {
+  const articles = await getArticles()
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-14">
       <div className="flex items-baseline justify-between border-b-2 border-foreground pb-3 mb-8">

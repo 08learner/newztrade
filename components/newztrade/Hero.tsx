@@ -1,10 +1,16 @@
 import Image from "next/image"
 import Link from "next/link"
-import { articles, featuredArticle, timeAgo } from "@/lib/data"
+import { getFeaturedArticle } from "@/lib/content"
+import { timeAgo } from "@/lib/data"
 import { ArrowUpRight, Clock } from "lucide-react"
 
-export function Hero() {
-  const sideStories = articles.slice(0, 3)
+export async function Hero() {
+  const all = await getFeaturedArticle()
+  const articles = (await import("@/lib/content")).getArticles
+  const list = await articles()
+  const featuredArticle = all ?? list[0]
+  if (!featuredArticle) return null
+  const sideStories = list.slice(0, 3)
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-8 pb-12">
       <div className="grid gap-10 lg:grid-cols-[1.6fr_1fr]">

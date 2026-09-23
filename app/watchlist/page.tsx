@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { WatchlistClient } from "@/components/newztrade/WatchlistClient"
+import { getInstruments } from "@/lib/content"
 import { Star } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -10,7 +11,8 @@ export const metadata: Metadata = {
     "Build a personal watchlist of NEPSE stocks, global indices, crypto, forex pairs and commodities, saved on your device.",
 }
 
-export default function WatchlistPage() {
+export default async function WatchlistPage() {
+  const instruments = await getInstruments()
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -27,7 +29,7 @@ export default function WatchlistPage() {
             this device — no account needed.
           </p>
         </div>
-        <WatchlistClient />
+        <WatchlistClient instruments={instruments} />
       </main>
       <Footer />
     </div>

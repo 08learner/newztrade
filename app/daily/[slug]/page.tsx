@@ -1,7 +1,6 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { digests, getDigestBySlug } from "@/lib/digest"
-import { getInstrumentBySymbol } from "@/lib/data"
+import { getDigestBySlugAsync, getDigests, getInstruments } from "@/lib/content"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
@@ -9,6 +8,7 @@ import { NotFoundBlock } from "@/components/newztrade/NotFoundBlock"
 import { ArrowLeft, CalendarDays, TrendingDown, TrendingUp } from "lucide-react"
 
 export async function generateStaticParams() {
+  const digests = await getDigests()
   return digests.map((d) => ({ slug: d.slug }))
 }
 
@@ -18,7 +18,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const digest = getDigestBySlug(slug)
+  const digest = await getDigestBySlugAsync(slug)
   if (!digest) return { title: "Digest not found — NewzTrade" }
   return {
     title: `${digest.title} — NewzTrade Daily`,
@@ -34,7 +34,10 @@ export default async function DailyDigestPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const digest = getDigestBySlug(slug)
+  const digest = await getDigestBySlugAsync(slug)
+  const digests = await getDigests()
+  const instruments = await getInstruments()
+  const slugBySymbol = new Map(instruments.map((i) => [i.symbol, i.slug]))
 
   if (!digest) {
     return (
@@ -107,16 +110,16 @@ export default async function DailyDigestPage({
                   {digest.quotes.map((q) => {
                     const up = q.changePct >= 0
                     const Icon = up ? TrendingUp : TrendingDown
-                    const instrument = getInstrumentBySymbol(q.symbol)
+                    const slug = slugBySymbol.get(q.symbol)
                     return (
                       <li
                         key={q.symbol}
                         className="flex items-center justify-between gap-3 py-2.5 border-b border-white/10 last:border-0"
                       >
                         <div>
-                          {instrument ? (
+                          {slug ? (
                             <Link
-                              href={`/instrument/${instrument.slug}`}
+                              href={`/instrument/${slug}`}
                               className="text-sm font-semibold text-white hover:text-emerald-400 hover:underline underline-offset-2 transition-colors"
                             >
                               {q.symbol}
