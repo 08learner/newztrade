@@ -14,6 +14,7 @@ import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
 import { NotFoundBlock } from "@/components/newztrade/NotFoundBlock"
+import { TrendingRail } from "@/components/newztrade/TrendingRail"
 import { ArrowUpRight, Clock, TrendingDown, TrendingUp } from "lucide-react"
 
 const categoryQuotes: Record<string, string[]> = {
@@ -280,6 +281,7 @@ export default async function CategoryPage({
                   )}
                 </div>
               )}
+              <TrendingRail />
             </aside>
           </div>
         </div>

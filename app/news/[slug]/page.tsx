@@ -13,6 +13,7 @@ import { ArticleCard } from "@/components/newztrade/ArticleCard"
 import { NotFoundBlock } from "@/components/newztrade/NotFoundBlock"
 import { ReadingProgress } from "@/components/newztrade/ReadingProgress"
 import { BackToTop } from "@/components/newztrade/BackToTop"
+import { TrendingRail } from "@/components/newztrade/TrendingRail"
 import { ArrowLeft, Clock } from "lucide-react"
 
 export async function generateStaticParams() {
@@ -108,7 +109,8 @@ export default async function ArticlePage({
             </span>
           </div>
 
-          <div className="mt-8 mx-auto max-w-3xl">
+          <div className="mt-8 grid gap-12 lg:grid-cols-[1fr_320px] items-start">
+          <div className="mx-auto w-full max-w-3xl lg:mx-0">
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight">
               {article.title}
             </h1>
@@ -138,6 +140,11 @@ export default async function ArticlePage({
                 </p>
               ))}
             </div>
+          </div>
+          <TrendingRail
+            excludeSlug={article.slug}
+            className="lg:sticky lg:top-24"
+          />
           </div>
         </article>
 

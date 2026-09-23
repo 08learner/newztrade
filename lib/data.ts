@@ -661,6 +661,24 @@ export function timeAgo(iso: string): string {
 
 export const allArticles = [featuredArticle, ...articles]
 
+/**
+ * Deterministic "most read" demo ranking — stable across builds because it is
+ * seeded from each article slug. Becomes real analytics ordering later.
+ */
+export function getTrendingArticles(excludeSlug?: string, count = 5): Article[] {
+  const score = (slug: string) => {
+    let s = 7
+    for (const ch of slug) s = (s * 31 + ch.charCodeAt(0)) % 10007
+    return s
+  }
+  return allArticles
+    .filter((a) => a.slug !== excludeSlug)
+    .map((a) => ({ a, s: score(a.slug) }))
+    .sort((x, y) => y.s - x.s)
+    .slice(0, count)
+    .map(({ a }) => a)
+}
+
 export function getArticleBySlug(slug: string): Article | undefined {
   return allArticles.find((a) => a.slug === slug)
 }
