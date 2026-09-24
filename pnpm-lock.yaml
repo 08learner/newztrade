@@ -20,6 +20,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.100.1
         version: 5.101.0(react@19.2.4)
+      '@writeshh/nepse-sdk':
+        specifier: ^1.0.0
+        version: 1.0.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1876,6 +1879,11 @@ packages:
     resolution: {integrity: sha512-nAB74NfSNKknqQ1RrYj6uz8FcXEomu/MATJZxh/x+BArzN2U3JbOYC0APYzUIGhVY3m5hRxA8VPNdPBoG8txlA==}
     cpu: [x64]
     os: [win32]
+
+  '@writeshh/nepse-sdk@1.0.0':
+    resolution: {integrity: sha512-aSJHgercTbOSSGDgOST1iEUUezn559SZBXcqkbLwuPkPioESf6+1S4pQKeyc8Rygx5Ajm56M3Xd2xGOJ44NUMQ==}
+    engines: {node: '>=24'}
+    hasBin: true
 
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
@@ -5871,6 +5879,8 @@ snapshots:
 
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
+
+  '@writeshh/nepse-sdk@1.0.0': {}
 
   accepts@2.0.0:
     dependencies:

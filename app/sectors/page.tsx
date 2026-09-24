@@ -1,10 +1,15 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { getInstruments } from "@/lib/content"
+import { getInstruments, getNepseCompanies } from "@/lib/content"
 import type { Instrument } from "@/lib/data"
+import { getNepsePriceSnapshot } from "@/lib/nepse"
+import { NepseDirectory, type DirectoryQuote } from "@/components/newztrade/NepseDirectory"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { LayoutGrid, TrendingUp, TrendingDown } from "lucide-react"
+
+// Live NEPSE prices refresh at most every 5 minutes (cached upstream).
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: "Sectors — Market Performance by Group",
@@ -12,9 +17,10 @@ export const metadata: Metadata = {
     "Sector-by-sector market performance: NEPSE banks, hydropower and insurers, plus global indices, crypto, forex and commodities tracked on NewzTrade.",
 }
 
+// NEPSE is intentionally absent: its full 649-security directory renders in
+// its own section below instead of the 3 curated rows.
 const sectorOrder: Instrument["market"][] = [
   "Index",
-  "NEPSE",
   "Stocks",
   "Crypto",
   "Forex",
@@ -33,7 +39,27 @@ const sectorLabels: Record<string, { label: string; blurb: string }> = {
 }
 
 export default async function SectorsPage() {
-  const instruments = await getInstruments()
+  const [instruments, nepseCompanies, snapshot] = await Promise.all([
+    getInstruments(),
+    getNepseCompanies(),
+    getNepsePriceSnapshot(),
+  ])
+
+  const directoryQuotes: Record<string, DirectoryQuote> = {}
+  if (snapshot) {
+    for (const [symbol, q] of snapshot.quotes) {
+      directoryQuotes[symbol] = {
+        ltp: q.ltp,
+        changePct: q.changePct,
+        volume: q.volume,
+      }
+    }
+  }
+  const instrumentHrefs: Record<string, string> = {}
+  for (const i of instruments) {
+    if (i.market === "NEPSE") instrumentHrefs[i.symbol] = `/instrument/${i.slug}`
+  }
+
   const groups = sectorOrder
     .map((market) => ({
       market,
@@ -53,12 +79,35 @@ export default async function SectorsPage() {
             Performance by sector
           </h1>
           <p className="mt-3 text-muted-foreground leading-relaxed">
-            Every instrument NewzTrade tracks, grouped by market group — from
-            NEPSE-listed companies to global indices and commodities.
+            The complete NEPSE listed-company directory with live prices, plus
+            every global instrument NewzTrade tracks, grouped by market.
           </p>
         </div>
 
-        <div className="mt-10 space-y-12">
+        <section className="mt-10">
+          <h2 className="text-sm font-bold uppercase tracking-widest border-b-2 border-foreground pb-3 mb-4">
+            NEPSE — Full Listed Directory
+          </h2>
+          <p className="mb-4 text-sm text-muted-foreground">
+            Every security listed on the Nepal Stock Exchange — all commercial
+            banks, hydropower, insurance, microfinance and more — with real
+            last-traded prices for symbols that traded in the latest session.
+          </p>
+          {nepseCompanies.length > 0 ? (
+            <NepseDirectory
+              companies={nepseCompanies}
+              quotes={directoryQuotes}
+              fetchedAt={snapshot?.fetchedAt ?? null}
+              instrumentHrefs={instrumentHrefs}
+            />
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              The NEPSE directory is temporarily unavailable.
+            </p>
+          )}
+        </section>
+
+        <div className="mt-14 space-y-12">
           {groups.map((g) => {
             const meta = sectorLabels[g.market] ?? { label: g.market, blurb: "" }
             const avg =

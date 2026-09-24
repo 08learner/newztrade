@@ -201,6 +201,55 @@ export const getSiteContent = cache(async (): Promise<SiteContent> => {
 })
 
 // ---------------------------------------------------------------------------
+// NEPSE listed-company directory (649 real securities seeded from the live
+// NEPSE API into public.nepse_companies). Separate from getSiteContent so its
+// fallback invariants stay untouched; an unreachable/missing table yields [].
+// ---------------------------------------------------------------------------
+
+export interface NepseCompany {
+  symbol: string
+  companyName: string
+  sectorName: string
+  instrumentType: string
+  status: string
+}
+
+interface NepseCompanyRow {
+  symbol: string
+  company_name: string
+  sector_name: string
+  instrument_type: string
+  status: string
+}
+
+export const getNepseCompanies = cache(async (): Promise<NepseCompany[]> => {
+  const env = getSupabasePublicEnv()
+  if (!env.configured) return []
+  try {
+    const supabase = createClient(env.url!, env.key!, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    })
+    const timeout = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("nepse_companies fetch timeout")), 3500)
+    )
+    const { data, error } = await Promise.race([
+      supabase.from("nepse_companies").select("*").order("sort_order"),
+      timeout,
+    ])
+    if (error || !data?.length) return []
+    return (data as NepseCompanyRow[]).map((r) => ({
+      symbol: r.symbol,
+      companyName: r.company_name,
+      sectorName: r.sector_name,
+      instrumentType: r.instrument_type,
+      status: r.status,
+    }))
+  } catch {
+    return []
+  }
+})
+
+// ---------------------------------------------------------------------------
 // Async getters consumed by pages and server components.
 // ---------------------------------------------------------------------------
 

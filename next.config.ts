@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // @writeshh/nepse-sdk reads bundled WASM/asset files at runtime — keep it
+  // external to the Next.js bundle so its assets resolve on disk.
+  serverExternalPackages: ["@writeshh/nepse-sdk"],
   // Allow preview subdomains for Keystone preview system
   allowedDevOrigins: [
     "preview.localhost",

@@ -6,11 +6,16 @@ import {
   getInstruments,
   getRelatedArticlesAsync,
 } from "@/lib/content"
+import { formatNpr, getNepsePriceSnapshot } from "@/lib/nepse"
 import { Header } from "@/components/newztrade/Header"
 import { Footer } from "@/components/newztrade/Footer"
 import { ArticleCard } from "@/components/newztrade/ArticleCard"
 import { NotFoundBlock } from "@/components/newztrade/NotFoundBlock"
 import { ArrowLeft, TrendingDown, TrendingUp } from "lucide-react"
+
+// Refresh ISR pages at most every 5 minutes so NEPSE overlays track the
+// latest trading session (upstream snapshot is itself cached 5 minutes).
+export const revalidate = 300
 
 export async function generateStaticParams() {
   const instruments = await getInstruments()
@@ -93,8 +98,15 @@ export default async function InstrumentPage({
     )
   }
 
-  const up = instrument.changePct >= 0
-  const points = sparklinePoints(instrument.slug, numericPrice(instrument.price))
+  // Overlay a real last-traded price for NEPSE symbols when the unofficial
+  // feed is reachable and the symbol traded in the latest session.
+  const snapshot = instrument.market === "NEPSE" ? await getNepsePriceSnapshot() : null
+  const live = snapshot?.quotes.get(instrument.symbol) ?? null
+
+  const displayPrice = live ? formatNpr(live.ltp) : instrument.price
+  const displayChangePct = live ? live.changePct : instrument.changePct
+  const up = displayChangePct >= 0
+  const points = sparklinePoints(instrument.slug, numericPrice(displayPrice))
   const related = (await getRelatedArticlesAsync(instrument)).slice(0, 3)
   const Icon = up ? TrendingUp : TrendingDown
 
@@ -131,7 +143,7 @@ export default async function InstrumentPage({
           </h1>
           <div className="mt-4 flex items-end gap-4">
             <span className="font-ticker text-4xl sm:text-5xl font-semibold tabular-nums tracking-tight">
-              {instrument.price}
+              {displayPrice}
             </span>
             <span
               className={`flex items-center gap-1.5 pb-1.5 font-ticker text-xl tabular-nums ${
@@ -140,11 +152,17 @@ export default async function InstrumentPage({
             >
               <Icon className="size-6" />
               {up ? "+" : ""}
-              {instrument.changePct.toFixed(2)}%
+              {displayChangePct.toFixed(2)}%
             </span>
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
-            {instrument.symbol} · Illustrative demo quote · Not investment advice
+            {instrument.symbol} ·{" "}
+            {live
+              ? `Unofficial best-effort live price via NEPSE, updated ${new Date(
+                  snapshot!.fetchedAt
+                ).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}`
+              : "Illustrative demo quote"}{" "}
+            · Not investment advice
           </p>
         </div>
 
