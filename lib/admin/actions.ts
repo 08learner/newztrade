@@ -110,6 +110,49 @@ export async function saveArticle(input: ArticleInput): Promise<ActionResult> {
   return { ok: true }
 }
 
+const IMAGE_MIME: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+  "image/avif": "avif",
+}
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024
+
+export type UploadResult = { ok: true; url: string } | { ok: false; error: string }
+
+/** Upload one article hero image picked in the editor to the public
+ *  'article-images' Storage bucket. Only the signed-in editor may upload
+ *  (session check here + storage.objects INSERT policy on authenticated). */
+export async function uploadArticleImage(formData: FormData): Promise<UploadResult> {
+  const { supabase, user } = await requireEditor()
+  if (!user) return { ok: false, error: "You are not signed in." }
+
+  const file = formData.get("file")
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: "Choose an image file to upload." }
+  }
+  const ext = IMAGE_MIME[file.type]
+  if (!ext) {
+    return { ok: false, error: "Use a JPEG, PNG, WebP, GIF or AVIF image." }
+  }
+  if (file.size > MAX_IMAGE_BYTES) {
+    return { ok: false, error: "Image is too large — keep it under 5 MB." }
+  }
+
+  const path = `articles/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+  const { error } = await supabase.storage.from("article-images").upload(path, file, {
+    contentType: file.type,
+    upsert: false,
+  })
+  if (error) return { ok: false, error: `Upload failed: ${error.message}` }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from("article-images").getPublicUrl(path)
+  return { ok: true, url: publicUrl }
+}
+
 export async function deleteArticle(slug: string): Promise<ActionResult> {
   const { supabase, user } = await requireEditor()
   if (!user) return { ok: false, error: "You are not signed in." }

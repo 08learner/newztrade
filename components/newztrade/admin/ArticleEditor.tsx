@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useEffect, useRef, useState, useTransition } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { saveArticle, type ArticleInput } from "@/lib/admin/actions"
+import { saveArticle, uploadArticleImage, type ArticleInput } from "@/lib/admin/actions"
 import type { Category } from "@/lib/data"
 
 const CATEGORIES: Category[] = ["Stocks", "Crypto", "Forex", "NEPSE", "Analysis", "Commodities"]
@@ -42,6 +42,45 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
   const [status, setStatus] = useState<"draft" | "published">(article?.status ?? "draft")
   const [error, setError] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
+  const [uploading, setUploading] = useState(false)
+  const [localPreview, setLocalPreview] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    return () => {
+      if (localPreview) URL.revokeObjectURL(localPreview)
+    }
+  }, [localPreview])
+
+  function onImageFilePicked(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ""
+    if (!file) return
+    setError(null)
+    if (localPreview) URL.revokeObjectURL(localPreview)
+    setLocalPreview(URL.createObjectURL(file))
+    setUploading(true)
+    const formData = new FormData()
+    formData.append("file", file)
+    uploadArticleImage(formData)
+      .then((result) => {
+        if (!result.ok) {
+          setError(result.error)
+          if (localPreview) URL.revokeObjectURL(localPreview)
+          setLocalPreview(null)
+          return
+        }
+        setImage(result.url)
+        if (localPreview) URL.revokeObjectURL(localPreview)
+        setLocalPreview(null)
+      })
+      .catch(() => {
+        setError("Upload failed. Check your connection and try again.")
+        if (localPreview) URL.revokeObjectURL(localPreview)
+        setLocalPreview(null)
+      })
+      .finally(() => setUploading(false))
+  }
 
   function onTitleChange(value: string) {
     setTitle(value)
@@ -103,7 +142,7 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
           </label>
           <button
             type="submit"
-            disabled={pending}
+            disabled={pending || uploading}
             className="rounded-md bg-zinc-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-zinc-700 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
           >
             {pending ? "Saving…" : status === "published" ? "Save & publish" : "Save draft"}
@@ -218,16 +257,55 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
           </label>
         </div>
 
-        <label className="block text-sm font-medium">
-          Image URL <span className="font-normal text-zinc-500">(path like /images/….jpg or a full URL)</span>
+        <div className="block text-sm font-medium">
+          Story image{" "}
+          <span className="font-normal text-zinc-500">
+            (JPEG, PNG, WebP, GIF or AVIF, up to 5 MB)
+          </span>
+          <div className="mt-1 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              disabled={uploading || pending}
+              onClick={() => fileInputRef.current?.click()}
+              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium transition hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
+            >
+              {uploading ? "Uploading…" : image ? "Replace image" : "Choose image…"}
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+              onChange={onImageFilePicked}
+              className="hidden"
+            />
+            {(localPreview || image) && (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element -- admin preview of a just-picked or stored image */}
+                <img
+                  src={localPreview ?? image}
+                  alt="Story image preview"
+                  className="h-16 w-24 rounded-md border border-zinc-200 object-cover dark:border-zinc-800"
+                />
+                <button
+                  type="button"
+                  disabled={uploading || pending}
+                  onClick={() => setImage("")}
+                  className="text-xs text-zinc-500 underline-offset-2 hover:underline"
+                >
+                  Remove
+                </button>
+              </>
+            )}
+          </div>
           <input
             type="text"
             value={image}
             onChange={(e) => setImage(e.target.value)}
             className={inputClass}
-            placeholder="/images/…"
+            placeholder="…or paste an image URL or /images/… path"
+            aria-label="Image URL"
           />
-        </label>
+        </div>
 
         <label className="flex items-center gap-2 text-sm font-medium">
           <input
