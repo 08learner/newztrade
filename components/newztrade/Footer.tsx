@@ -47,6 +47,12 @@ export function Footer() {
               {[
                 { label: "Watchlist", href: "/watchlist" },
                 { label: "Market Calendar", href: "/calendar" },
+                { label: "IPO Corner", href: "/ipo" },
+                { label: "Dividends", href: "/dividends" },
+                { label: "Sectors", href: "/sectors" },
+                { label: "Currency Rates", href: "/currencies" },
+                { label: "Gold & Silver", href: "/bullion" },
+                { label: "Market Hours", href: "/market-hours" },
                 { label: "Learn", href: "/learn" },
                 { label: "Search", href: "/search" },
               ].map((item) => (
@@ -65,8 +71,12 @@ export function Footer() {
               </p>
               {[
                 { label: "Digest Archive", href: "/daily" },
+                { label: "Newsletter", href: "/newsletter" },
+                { label: "FAQ", href: "/faq" },
                 { label: "About", href: "/about" },
                 { label: "Contact", href: "/contact" },
+                { label: "Advertise", href: "/advertise" },
+                { label: "Editorial Policy", href: "/editorial-policy" },
                 { label: "Privacy Policy", href: "/privacy" },
                 { label: "Terms of Use", href: "/terms" },
               ].map((item) => (

@@ -16,6 +16,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/watchlist",
     "/calendar",
     "/learn",
+    "/ipo",
+    "/dividends",
+    "/sectors",
+    "/currencies",
+    "/bullion",
+    "/market-hours",
+    "/faq",
+    "/newsletter",
+    "/advertise",
+    "/editorial-policy",
   ].map(
     (path) => ({
       url: `${BASE_URL}${path}`,
