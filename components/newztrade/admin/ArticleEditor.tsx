@@ -115,9 +115,15 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
   }
 
   const wordCount = body.trim() ? body.trim().split(/\s+/).length : 0
+  const effectiveReadMinutes = readMinutes > 0 ? readMinutes : Math.max(1, Math.round(wordCount / 200))
+  const previewParagraphs = body
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
 
   return (
     <form onSubmit={onSubmit}>
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-sm text-zinc-500">
@@ -150,8 +156,9 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
         </div>
       </div>
 
+      <div>
       {error && (
-        <p role="alert" className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
@@ -316,6 +323,66 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
           />
           Featured story
         </label>
+      </div>
+      </div>
+
+      <aside className="lg:sticky lg:top-8 lg:self-start">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+          Live preview
+        </p>
+        <article className="overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+          {(localPreview || image) && (
+            // eslint-disable-next-line @next/next/no-img-element -- admin live preview
+            <img
+              src={localPreview ?? image}
+              alt={title || "Story image preview"}
+              className="aspect-[2/1] w-full object-cover"
+            />
+          )}
+          <div className="p-5">
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className="rounded-full bg-zinc-900 px-2 py-0.5 font-semibold uppercase tracking-wide text-white dark:bg-zinc-100 dark:text-zinc-900">
+                {category}
+              </span>
+              {featured && (
+                <span className="rounded bg-amber-100 px-1.5 py-0.5 font-semibold uppercase text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                  Featured
+                </span>
+              )}
+              <span
+                className={`rounded-full px-2 py-0.5 font-semibold ${
+                  status === "published"
+                    ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
+                    : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+                }`}
+              >
+                {status}
+              </span>
+            </div>
+            <h2 className="mt-3 font-serif text-2xl font-bold leading-snug">
+              {title || "Untitled story"}
+            </h2>
+            <p className="mt-1 text-xs text-zinc-500">
+              {author || "NewzTrade Desk"} · {effectiveReadMinutes} min read
+            </p>
+            {excerpt && <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{excerpt}</p>}
+            <div className="mt-4 space-y-3 border-t border-zinc-100 pt-4 text-sm leading-relaxed text-zinc-800 dark:border-zinc-900 dark:text-zinc-200">
+              {previewParagraphs.length > 0 ? (
+                previewParagraphs.slice(0, 6).map((p, i) => (
+                  <p key={i} className="line-clamp-3">
+                    {p}
+                  </p>
+                ))
+              ) : (
+                <p className="italic text-zinc-400">Start writing the body to see it here…</p>
+              )}
+              {previewParagraphs.length > 6 && (
+                <p className="text-xs text-zinc-400">…{previewParagraphs.length - 6} more paragraphs</p>
+              )}
+            </div>
+          </div>
+        </article>
+      </aside>
       </div>
     </form>
   )
