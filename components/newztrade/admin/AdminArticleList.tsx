@@ -82,6 +82,12 @@ export default function AdminArticleList({
         </div>
         <div className="flex items-center gap-2">
           <Link
+            href="/admin/media"
+            className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium transition hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-900"
+          >
+            Media library
+          </Link>
+          <Link
             href="/admin/edit/new"
             className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-300"
           >

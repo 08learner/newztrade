@@ -153,6 +153,58 @@ export async function uploadArticleImage(formData: FormData): Promise<UploadResu
   return { ok: true, url: publicUrl }
 }
 
+export interface ArticleImage {
+  name: string
+  url: string
+  sizeKB: number
+  createdAt: string
+}
+
+export type ListImagesResult =
+  | { ok: true; images: ArticleImage[] }
+  | { ok: false; error: string }
+
+/** List every image in the public 'article-images' bucket (articles/ folder)
+ *  for the admin media library. Editor session required. */
+export async function listArticleImages(): Promise<ListImagesResult> {
+  const { supabase, user } = await requireEditor()
+  if (!user) return { ok: false, error: "You are not signed in." }
+
+  const { data, error } = await supabase.storage.from("article-images").list("articles", {
+    limit: 500,
+    sortBy: { column: "created_at", order: "desc" },
+  })
+  if (error) return { ok: false, error: `Could not load images: ${error.message}` }
+
+  const images: ArticleImage[] = (data ?? [])
+    .filter((f) => f.name !== ".emptyFolderPlaceholder")
+    .map((f) => {
+      const path = `articles/${f.name}`
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("article-images").getPublicUrl(path)
+      const meta = (f.metadata ?? {}) as { size?: number }
+      return {
+        name: f.name,
+        url: publicUrl,
+        sizeKB: typeof meta.size === "number" ? Math.max(1, Math.round(meta.size / 1024)) : 0,
+        createdAt: f.created_at ?? "",
+      }
+    })
+  return { ok: true, images }
+}
+
+/** Permanently delete one image from the 'article-images' bucket. Editor
+ *  session required; storage.objects DELETE policy also enforces it. */
+export async function deleteArticleImage(name: string): Promise<ActionResult> {
+  const { supabase, user } = await requireEditor()
+  if (!user) return { ok: false, error: "You are not signed in." }
+  if (!/^[a-z0-9.-]+$/i.test(name)) return { ok: false, error: "Invalid image name." }
+  const { error } = await supabase.storage.from("article-images").remove([`articles/${name}`])
+  if (error) return { ok: false, error: `Could not delete: ${error.message}` }
+  return { ok: true }
+}
+
 export async function deleteArticle(slug: string): Promise<ActionResult> {
   const { supabase, user } = await requireEditor()
   if (!user) return { ok: false, error: "You are not signed in." }
