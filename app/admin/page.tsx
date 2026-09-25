@@ -31,12 +31,18 @@ export default async function AdminPage() {
 
   const articles = (data ?? []) as unknown as AdminArticleRow[]
 
+  // Subscriber count needs the editor session (SELECT policy); tolerate failure.
+  const { count } = await supabase
+    .from("newsletter_subscribers")
+    .select("id", { count: "exact", head: true })
+
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-10">
       <AdminArticleList
         articles={articles}
         email={user.email ?? "editor"}
         loadError={error ? "Could not load articles. Try refreshing." : null}
+        subscriberCount={count ?? 0}
       />
     </main>
   )

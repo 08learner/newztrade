@@ -23,10 +23,12 @@ export default function AdminArticleList({
   articles,
   email,
   loadError,
+  subscriberCount,
 }: {
   articles: AdminArticleRow[]
   email: string
   loadError: string | null
+  subscriberCount: number
 }) {
   const router = useRouter()
   const [pending, startTransition] = useTransition()
@@ -71,6 +73,7 @@ export default function AdminArticleList({
     { label: "Published", value: published },
     { label: "Drafts", value: drafts },
     { label: "Featured", value: featuredCount },
+    { label: "Subscribers", value: subscriberCount },
   ]
 
   return (
@@ -110,7 +113,7 @@ export default function AdminArticleList({
         </p>
       )}
 
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map((s) => (
           <div
             key={s.label}
