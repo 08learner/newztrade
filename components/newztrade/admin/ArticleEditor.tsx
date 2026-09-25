@@ -3,7 +3,13 @@
 import { useEffect, useRef, useState, useTransition } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { saveArticle, uploadArticleImage, type ArticleInput } from "@/lib/admin/actions"
+import {
+  listArticleImages,
+  saveArticle,
+  uploadArticleImage,
+  type ArticleImage,
+  type ArticleInput,
+} from "@/lib/admin/actions"
 import type { Category } from "@/lib/data"
 
 const CATEGORIES: Category[] = ["Stocks", "Crypto", "Forex", "NEPSE", "Analysis", "Commodities"]
@@ -45,6 +51,46 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
   const [uploading, setUploading] = useState(false)
   const [localPreview, setLocalPreview] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [libraryOpen, setLibraryOpen] = useState(false)
+  const [libraryImages, setLibraryImages] = useState<ArticleImage[] | null>(null)
+  const [libraryError, setLibraryError] = useState<string | null>(null)
+
+  function openLibrary() {
+    setLibraryOpen(true)
+    if (libraryImages !== null) return // already loaded once this session
+    setLibraryError(null)
+    listArticleImages()
+      .then((result) => {
+        if (!result.ok) {
+          setLibraryError(result.error)
+          setLibraryImages([])
+          return
+        }
+        setLibraryImages(result.images)
+      })
+      .catch(() => {
+        setLibraryError("Could not load the media library. Try again.")
+        setLibraryImages([])
+      })
+  }
+
+  function pickFromLibrary(img: ArticleImage) {
+    if (localPreview) {
+      URL.revokeObjectURL(localPreview)
+      setLocalPreview(null)
+    }
+    setImage(img.url)
+    setLibraryOpen(false)
+  }
+
+  useEffect(() => {
+    if (!libraryOpen) return
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setLibraryOpen(false)
+    }
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [libraryOpen])
 
   useEffect(() => {
     return () => {
@@ -285,6 +331,14 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
               onChange={onImageFilePicked}
               className="hidden"
             />
+            <button
+              type="button"
+              disabled={uploading || pending}
+              onClick={openLibrary}
+              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium transition hover:bg-zinc-100 disabled:opacity-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
+            >
+              Choose from library
+            </button>
             {(localPreview || image) && (
               <>
                 {/* eslint-disable-next-line @next/next/no-img-element -- admin preview of a just-picked or stored image */}
@@ -323,6 +377,73 @@ export default function ArticleEditor({ article }: { article: EditableArticle | 
           />
           Featured story
         </label>
+
+        {libraryOpen && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Choose an image from the media library"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setLibraryOpen(false)
+            }}
+          >
+            <div className="max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-xl border border-zinc-200 bg-white p-5 shadow-xl dark:border-zinc-800 dark:bg-zinc-950">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="font-serif text-xl font-bold">Media library</h2>
+                <button
+                  type="button"
+                  onClick={() => setLibraryOpen(false)}
+                  aria-label="Close media library"
+                  className="rounded-md border border-zinc-300 px-2.5 py-1 text-xs font-medium transition hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-900"
+                >
+                  Close ✕
+                </button>
+              </div>
+              {libraryImages === null ? (
+                <p className="py-14 text-center text-sm text-zinc-500">Loading images…</p>
+              ) : libraryError ? (
+                <p
+                  role="alert"
+                  className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300"
+                >
+                  {libraryError}
+                </p>
+              ) : libraryImages.length === 0 ? (
+                <p className="py-14 text-center text-sm text-zinc-500">
+                  No uploaded images yet. Use “Choose image…” to upload one first.
+                </p>
+              ) : (
+                <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                  {libraryImages.map((img) => (
+                    <button
+                      key={img.name}
+                      type="button"
+                      onClick={() => pickFromLibrary(img)}
+                      className={`group overflow-hidden rounded-lg border text-left transition hover:border-zinc-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-900 dark:hover:border-zinc-300 ${
+                        image === img.url
+                          ? "border-zinc-900 ring-2 ring-zinc-900 dark:border-zinc-300 dark:ring-zinc-300"
+                          : "border-zinc-200 dark:border-zinc-800"
+                      }`}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element -- library picker thumbnails */}
+                      <img
+                        src={img.url}
+                        alt={img.name}
+                        loading="lazy"
+                        className="aspect-[4/3] w-full object-cover transition group-hover:opacity-90"
+                      />
+                      <span className="block truncate px-2 py-1.5 text-[11px] text-zinc-500">
+                        {image === img.url ? "✓ Selected — " : ""}
+                        {img.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
       </div>
 
