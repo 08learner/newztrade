@@ -46,6 +46,7 @@ export function Footer() {
               </p>
               {[
                 { label: "Watchlist", href: "/watchlist" },
+                { label: "Screener", href: "/screener" },
                 { label: "Market Calendar", href: "/calendar" },
                 { label: "IPO Corner", href: "/ipo" },
                 { label: "Dividends", href: "/dividends" },

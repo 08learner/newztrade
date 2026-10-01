@@ -11,6 +11,13 @@ function categoryHref(item: string) {
   return item === "Markets" ? "/" : `/${item.toLowerCase()}`
 }
 
+const toolLinks = [
+  { label: "Watchlist", href: "/watchlist" },
+  { label: "Screener", href: "/screener" },
+  { label: "Calendar", href: "/calendar" },
+  { label: "Newsletter", href: "/newsletter" },
+]
+
 export function Header() {
   const pathname = usePathname()
   return (
@@ -60,6 +67,30 @@ export function Header() {
               <Search className="size-4" />
             </Link>
           </div>
+        </div>
+      </div>
+      <div className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <nav
+            className="flex items-center gap-5 overflow-x-auto py-2"
+            aria-label="Tools"
+          >
+            {toolLinks.map((tool) => {
+              const active =
+                pathname === tool.href || pathname.startsWith(`${tool.href}/`)
+              return (
+                <Link
+                  key={tool.href}
+                  href={tool.href}
+                  className={`whitespace-nowrap text-xs font-semibold uppercase tracking-wider transition-colors hover:text-foreground ${
+                    active ? "text-foreground" : "text-muted-foreground"
+                  }`}
+                >
+                  {tool.label}
+                </Link>
+              )
+            })}
+          </nav>
         </div>
       </div>
     </header>
