@@ -95,7 +95,7 @@ export function Footer() {
         <div className="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs">© 2026 NewzTrade. All rights reserved.</p>
-            <p className="mt-1 text-xs">Independent market news for Nepal.</p>
+            <p className="mt-1 text-xs italic">Independent market news for Nepal.</p>
           </div>
           <p>Market data shown is illustrative demo content, not investment advice.</p>
         </div>
