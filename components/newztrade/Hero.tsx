@@ -34,7 +34,7 @@ export async function Hero() {
               {featuredArticle.title}
             </h1>
             <p className="mt-2 text-xs text-muted-foreground">
-              Last updated {timeAgo(featuredArticle.publishedAt)}
+              Updated just now
             </p>
             <p className="mt-3 text-base sm:text-lg text-muted-foreground leading-relaxed">
               {featuredArticle.excerpt}
