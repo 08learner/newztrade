@@ -92,8 +92,8 @@ export function Footer() {
             </nav>
           </div>
         </div>
-        <div className="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 NewzTrade. All rights reserved.</p>
+        <div className="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs">© 2026 NewzTrade. All rights reserved.</p>
           <p>Market data shown is illustrative demo content, not investment advice.</p>
         </div>
       </div>
