@@ -33,7 +33,7 @@ export async function Hero() {
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-[2.75rem] font-bold leading-[1.15] tracking-tight group-hover:underline decoration-up decoration-2 underline-offset-4">
               {featuredArticle.title}
             </h1>
-            <p className="mt-2 text-xs text-muted-foreground">
+            <p className="mt-2 text-xs font-medium text-muted-foreground">
               Last updated {timeAgo(featuredArticle.publishedAt)}
             </p>
             <p className="mt-3 text-base sm:text-lg text-muted-foreground leading-relaxed">
