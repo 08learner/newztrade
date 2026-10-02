@@ -58,6 +58,9 @@ export async function TickerBar() {
           )
         })}
       </div>
+      <p className="border-t border-white/5 px-4 py-1 text-center text-[10px] tracking-wide text-white/50">
+        Markets open 11:00-15:00 NPT
+      </p>
     </div>
   )
 }
