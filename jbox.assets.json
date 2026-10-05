@@ -1,0 +1,16 @@
+{
+  "formatVersion": 1,
+  "assets": {},
+  "legacyPaths": {},
+  "legacyBaseline": {
+    "app/favicon.ico": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932",
+    "public/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg": "5a33a1b27df8e2a5fd1ce9ed25c402ee47785250985be89dec663133c7e3c58a",
+    "public/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg": "38835e144f34228afa2cf6fcf62fb16ae433cd79922ebafb512af60cc748ebe1",
+    "public/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg": "4f79b15caff6df591cb301441a4b0c75a703ebf075f467b4f09e0c7ee4b9f57e",
+    "public/images/bc6481e4-fbf5-404e-960c-f38c6a505f29.jpg": "ad46815ca259d7798a6cc879c6689a08f366da74aebaba20a852f41a4ca4f16c",
+    "public/images/db6dfd9a-c88e-4574-b84a-888166fd49f2.jpg": "fcd16068273e88c5c4b5e1b5708dd9b9b15f053c0d2438ac2037600f79f23a7d",
+    "public/images/dc572bdb-4f82-4c2b-bc33-f91722372652.jpg": "c1ec0985a7618e62d09b8434746754cb3fba4f522daeb21b34fa974a38a2e9ea",
+    "public/images/fe09f238-1b61-4047-90a6-d342b7dfa1ef.jpg": "6d657abe176430917fb6b6d5df0a275355a74379fe64a3c13f5c5fefc6fdcc31",
+    "public/images/ff2c6c99-c24c-4f4a-bda5-08ebc0688d62.jpg": "b6f82a17aa6bc4fdcfd23c2729c7f4068d9900183b09daeff7e6eb8be5091cef"
+  }
+}
