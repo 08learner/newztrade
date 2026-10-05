@@ -1,7 +1,69 @@
 {
   "formatVersion": 1,
-  "assets": {},
-  "legacyPaths": {},
+  "assets": {
+    "legacy:/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg": {
+      "id": "legacy:/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg",
+      "source": "legacy-project",
+      "fileName": "47a1014b-f3ad-45af-8da5-4f97376a076d.jpg",
+      "sourceUrl": "project-file://public/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg",
+      "usageContext": "/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg",
+      "assetId": "j1pohazjwf6uqrklf506ftnd",
+      "assetUrl": "https://augmented-reason-botany.ngrok-free.dev/project-assets/n5gpvm6ngwwflycbhioqf76l/j1pohazjwf6uqrklf506ftnd/5a33a1b27df8e2a5fd1ce9ed25c402ee47785250985be89dec663133c7e3c58a/5a33a1b27df8e2a5.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 1993193,
+      "sha256": "5a33a1b27df8e2a5fd1ce9ed25c402ee47785250985be89dec663133c7e3c58a",
+      "validated": false,
+      "createdAt": "2026-10-05T06:57:09.204Z",
+      "updatedAt": "2026-10-05T06:57:09.204Z"
+    },
+    "legacy:/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg": {
+      "id": "legacy:/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg",
+      "source": "legacy-project",
+      "fileName": "76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg",
+      "sourceUrl": "project-file://public/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg",
+      "usageContext": "/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg",
+      "assetId": "av413cnxn0z9il9bzd8dmcsg",
+      "assetUrl": "https://augmented-reason-botany.ngrok-free.dev/project-assets/n5gpvm6ngwwflycbhioqf76l/av413cnxn0z9il9bzd8dmcsg/38835e144f34228afa2cf6fcf62fb16ae433cd79922ebafb512af60cc748ebe1/38835e144f34228a.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 3654928,
+      "sha256": "38835e144f34228afa2cf6fcf62fb16ae433cd79922ebafb512af60cc748ebe1",
+      "validated": false,
+      "createdAt": "2026-10-05T06:57:16.265Z",
+      "updatedAt": "2026-10-05T06:57:16.265Z"
+    }
+  },
+  "legacyPaths": {
+    "/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg": {
+      "id": "legacy:/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg",
+      "source": "legacy-project",
+      "fileName": "47a1014b-f3ad-45af-8da5-4f97376a076d.jpg",
+      "sourceUrl": "project-file://public/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg",
+      "usageContext": "/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg",
+      "assetId": "j1pohazjwf6uqrklf506ftnd",
+      "assetUrl": "https://augmented-reason-botany.ngrok-free.dev/project-assets/n5gpvm6ngwwflycbhioqf76l/j1pohazjwf6uqrklf506ftnd/5a33a1b27df8e2a5fd1ce9ed25c402ee47785250985be89dec663133c7e3c58a/5a33a1b27df8e2a5.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 1993193,
+      "sha256": "5a33a1b27df8e2a5fd1ce9ed25c402ee47785250985be89dec663133c7e3c58a",
+      "validated": false,
+      "createdAt": "2026-10-05T06:57:09.204Z",
+      "updatedAt": "2026-10-05T06:57:09.204Z"
+    },
+    "/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg": {
+      "id": "legacy:/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg",
+      "source": "legacy-project",
+      "fileName": "76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg",
+      "sourceUrl": "project-file://public/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg",
+      "usageContext": "/images/76ede341-dfd5-4b1d-b25c-8ae8ccb08d1c.jpg",
+      "assetId": "av413cnxn0z9il9bzd8dmcsg",
+      "assetUrl": "https://augmented-reason-botany.ngrok-free.dev/project-assets/n5gpvm6ngwwflycbhioqf76l/av413cnxn0z9il9bzd8dmcsg/38835e144f34228afa2cf6fcf62fb16ae433cd79922ebafb512af60cc748ebe1/38835e144f34228a.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 3654928,
+      "sha256": "38835e144f34228afa2cf6fcf62fb16ae433cd79922ebafb512af60cc748ebe1",
+      "validated": false,
+      "createdAt": "2026-10-05T06:57:16.265Z",
+      "updatedAt": "2026-10-05T06:57:16.265Z"
+    }
+  },
   "legacyBaseline": {
     "app/favicon.ico": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932",
     "public/images/47a1014b-f3ad-45af-8da5-4f97376a076d.jpg": "5a33a1b27df8e2a5fd1ce9ed25c402ee47785250985be89dec663133c7e3c58a",
