@@ -30,6 +30,21 @@
       "validated": false,
       "createdAt": "2026-10-05T06:57:16.265Z",
       "updatedAt": "2026-10-05T06:57:16.265Z"
+    },
+    "legacy:/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg": {
+      "id": "legacy:/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg",
+      "source": "legacy-project",
+      "fileName": "b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg",
+      "sourceUrl": "project-file://public/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg",
+      "usageContext": "/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg",
+      "assetId": "fz1ucxz5se4bit6oka9y18mr",
+      "assetUrl": "https://augmented-reason-botany.ngrok-free.dev/project-assets/n5gpvm6ngwwflycbhioqf76l/fz1ucxz5se4bit6oka9y18mr/4f79b15caff6df591cb301441a4b0c75a703ebf075f467b4f09e0c7ee4b9f57e/4f79b15caff6df59.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 1220586,
+      "sha256": "4f79b15caff6df591cb301441a4b0c75a703ebf075f467b4f09e0c7ee4b9f57e",
+      "validated": false,
+      "createdAt": "2026-10-05T08:40:33.358Z",
+      "updatedAt": "2026-10-05T08:40:33.358Z"
     }
   },
   "legacyPaths": {
@@ -62,6 +77,21 @@
       "validated": false,
       "createdAt": "2026-10-05T06:57:16.265Z",
       "updatedAt": "2026-10-05T06:57:16.265Z"
+    },
+    "/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg": {
+      "id": "legacy:/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg",
+      "source": "legacy-project",
+      "fileName": "b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg",
+      "sourceUrl": "project-file://public/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg",
+      "usageContext": "/images/b8930f87-3178-4cb7-b745-ac5e9aa1cb03.jpg",
+      "assetId": "fz1ucxz5se4bit6oka9y18mr",
+      "assetUrl": "https://augmented-reason-botany.ngrok-free.dev/project-assets/n5gpvm6ngwwflycbhioqf76l/fz1ucxz5se4bit6oka9y18mr/4f79b15caff6df591cb301441a4b0c75a703ebf075f467b4f09e0c7ee4b9f57e/4f79b15caff6df59.jpg",
+      "mimeType": "image/jpeg",
+      "sizeBytes": 1220586,
+      "sha256": "4f79b15caff6df591cb301441a4b0c75a703ebf075f467b4f09e0c7ee4b9f57e",
+      "validated": false,
+      "createdAt": "2026-10-05T08:40:33.358Z",
+      "updatedAt": "2026-10-05T08:40:33.358Z"
     }
   },
   "legacyBaseline": {
