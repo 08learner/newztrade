@@ -31,3 +31,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 Testing GitHub sync: edited from a local clone.
 Retest after review fixes.
+
+Flow 1: pulled from a local clone.
