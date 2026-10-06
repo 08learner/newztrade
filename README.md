@@ -30,7 +30,3 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 Testing GitHub sync: edited from a local clone.
-Sync test line 1.
-Sync test line 2.
-Sync test line 3.
-Sync test line 4.
