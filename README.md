@@ -33,3 +33,4 @@ Testing GitHub sync: edited from a local clone.
 Retest after review fixes.
 
 Flow 1: pulled from a local clone.
+Flow 10: GitHub side of a conflict.
