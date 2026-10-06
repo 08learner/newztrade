@@ -59,7 +59,7 @@ export async function TickerBar() {
         })}
       </div>
       <p className="border-t border-white/5 px-4 py-1 text-center text-[10px] tracking-wide text-white/50">
-        Market open: 11:00–15:00 NPT, Sunday to Thursday
+        Market hours: 11 AM – 3 PM (Nepal)
       </p>
     </div>
   )
