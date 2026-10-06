@@ -33,3 +33,4 @@ Testing GitHub sync: edited from a local clone.
 Retest after review fixes.
 
 Flow 1: pulled from a local clone.
+Flow 7: publish should be blocked while this is unpulled.
