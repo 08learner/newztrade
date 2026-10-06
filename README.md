@@ -35,3 +35,4 @@ Retest after review fixes.
 Flow 1: pulled from a local clone.
 Flow 7: publish should be blocked while this is unpulled.
 Flow 8: pushed while JBOX restores an older version.
+Flow 8 (take 2): pushed before a restore.
