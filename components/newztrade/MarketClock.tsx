@@ -60,7 +60,7 @@ export function MarketClock() {
           state.open ? "bg-up animate-pulse" : "bg-down"
         }`}
       />
-      Markets open · round 5
+      Markets open · test 2
     </span>
   )
 }
