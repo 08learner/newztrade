@@ -60,7 +60,7 @@ export function MarketClock() {
           state.open ? "bg-up animate-pulse" : "bg-down"
         }`}
       />
-      {state.open ? "Markets open" : "Markets closed"} · NPT {state.time}
+      Markets open · round 5
     </span>
   )
 }
