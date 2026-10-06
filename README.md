@@ -37,3 +37,4 @@ Flow 7: publish should be blocked while this is unpulled.
 Flow 8: pushed while JBOX restores an older version.
 Flow 8 (take 2): pushed before a restore.
 Flow 8 (take 3): pushed before a restore.
+Flow 8: pushed during a restore.
