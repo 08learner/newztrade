@@ -34,3 +34,4 @@ Sync test line 1.
 Sync test line 2.
 Sync test line 3.
 Sync test line 4.
+Restore test from a local clone.
